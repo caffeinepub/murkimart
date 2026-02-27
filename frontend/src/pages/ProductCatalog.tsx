@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { SlidersHorizontal, X, ChevronDown } from 'lucide-react';
+import { SlidersHorizontal } from 'lucide-react';
 import { ALL_PRODUCTS, CATEGORIES, Product } from '@/lib/products';
 import ProductCard from '@/components/catalog/ProductCard';
 import SearchBar from '@/components/common/SearchBar';
@@ -7,13 +7,13 @@ import SearchBar from '@/components/common/SearchBar';
 interface ProductCatalogProps {
   initialCategory?: string;
   initialSearch?: string;
+  onBack?: () => void;
 }
 
-export default function ProductCatalog({ initialCategory, initialSearch }: ProductCatalogProps) {
+export default function ProductCatalog({ initialCategory, initialSearch, onBack }: ProductCatalogProps) {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory || 'all');
   const [searchQuery, setSearchQuery] = useState(initialSearch || '');
   const [showFilters, setShowFilters] = useState(false);
-  const [vegOnly, setVegOnly] = useState(false);
   const [inStockOnly, setInStockOnly] = useState(false);
   const [sortBy, setSortBy] = useState<'relevance' | 'price_asc' | 'price_desc' | 'rating'>('relevance');
 
@@ -33,8 +33,7 @@ export default function ProductCatalog({ initialCategory, initialSearch }: Produ
       );
     }
 
-    if (vegOnly) products = products.filter(p => p.isVeg);
-    if (inStockOnly) products = products.filter(p => p.isInStock);
+    if (inStockOnly) products = products.filter(p => p.inStock);
 
     switch (sortBy) {
       case 'price_asc': return [...products].sort((a, b) => a.discountedPrice - b.discountedPrice);
@@ -42,11 +41,15 @@ export default function ProductCatalog({ initialCategory, initialSearch }: Produ
       case 'rating': return [...products].sort((a, b) => b.rating - a.rating);
       default: return products;
     }
-  }, [selectedCategory, searchQuery, vegOnly, inStockOnly, sortBy]);
+  }, [selectedCategory, searchQuery, inStockOnly, sortBy]);
 
   return (
     <div className="pb-4">
-      <SearchBar onSearch={setSearchQuery} />
+      <SearchBar
+        onSearch={setSearchQuery}
+        showBackButton={true}
+        onBack={onBack ?? (() => window.history.back())}
+      />
 
       {/* Category Tabs */}
       <div className="flex gap-2 px-4 py-3 overflow-x-auto scrollbar-hide border-b border-border">
@@ -86,15 +89,6 @@ export default function ProductCatalog({ initialCategory, initialSearch }: Produ
         >
           <SlidersHorizontal className="w-3.5 h-3.5" />
           Filters
-        </button>
-
-        <button
-          onClick={() => setVegOnly(!vegOnly)}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
-            vegOnly ? 'bg-secondary text-white border-secondary' : 'border-border text-foreground'
-          }`}
-        >
-          🌿 Veg Only
         </button>
 
         <button

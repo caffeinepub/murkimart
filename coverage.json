@@ -1,321 +1,37 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-27T08:51:22.201Z",
+  "generatedAt": "2026-02-27T15:24:51.612Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 11,
-    "implemented": 9,
+    "total": 1,
+    "implemented": 1,
     "items": [
       {
-        "id": "REQ-1",
-        "summary": "Apply a vibrant orange and green visual theme across the entire app branded as 'MurkiMart'. Use bold orange (#F97316) as primary accent, deep green (#16A34A) as secondary, white backgrounds, and clean sans-serif typography. The home screen should feel energetic and trustworthy, with prominent delivery promise ('Delivery in 10-15 mins') displayed at the top. Ensure consistent color usage across all screens, buttons, badges, and navigation.",
+        "id": "REQ-38",
+        "summary": "Add a profile/account summary section at the bottom of the Home page (frontend/src/pages/Home.tsx). The section should display: (1) the logged-in user's name and phone number sourced from authStore, or a 'Login / Sign Up' prompt if not authenticated; (2) a row of quick-link cards/buttons for 'My Orders', 'Saved Addresses', 'Loyalty Points', and 'Help & Support' — each tapping navigates to the Profile page; (3) a 'Go to Profile' button that navigates to the Profile page. Style the section consistently with the MurkiMart orange (#F97316) and green (#16A34A) theme, using card/tile layout with icons. Place it below the CustomerCareContact banner and above any footer padding.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/index.css",
-          "frontend/tailwind.config.js",
-          "frontend/src/components/layout/Header.tsx",
-          "frontend/src/components/layout/AppLayout.tsx"
+          "frontend/src/components/home/ProfileSummary.tsx",
+          "frontend/src/pages/Home.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/index.css",
-          "frontend/tailwind.config.js",
-          "frontend/src/components/layout/Header.tsx"
-        ]
-      },
-      {
-        "id": "REQ-10",
-        "summary": "Implement the core backend data models and actor functions for: (1) Orders — createOrder(userId, items, addressId, paymentMethod), getOrderById(id), getUserOrders(userId), updateOrderStatus(orderId, status); (2) Users — getOrCreateUser(id), getUserAddresses(userId), addAddress(userId, address), deleteAddress(userId, addressId); (3) Loyalty Points — addPoints(userId, points), getPoints(userId); (4) Admin stats — getOrderStats(), getTopProducts(), getHourlyOrderCounts(). Use stable variables for all persistent state.",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-11",
-        "summary": "Add app-wide bottom navigation bar with 4 tabs: Home (house icon), Categories (grid icon), Cart (cart icon with item count badge), and Profile (person icon). The active tab should be highlighted in orange. Navigation should persist across screen transitions. The cart tab badge should update in real-time as items are added/removed.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/layout/BottomNavigation.tsx",
-          "frontend/src/App.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/layout/BottomNavigation.tsx",
-          "frontend/src/App.tsx"
-        ]
-      },
-      {
-        "id": "REQ-2",
-        "summary": "Build a Home Feed screen with: (1) an auto-scrolling carousel of promotional banners featuring Murki Jaunpur local deals, (2) a 'MurkiMart Now' section with quick-add buttons for the top 20 essentials (e.g., Milk, Bread, Eggs, Parle-G, Atta, Rice, Dal, Onions, Tomatoes, Bananas, Butter, Paneer, Curd, Biscuits, Chips, Maggi, Cooking Oil, Sugar, Salt, Tea), (3) scrollable horizontal category tiles (Fruits & Vegetables, Dairy & Breakfast, Snacks, Personal Care, Pharmacy, Household, Electronics, Pet Supplies), and (4) a 'Flash Deals' section showing time-limited offers with countdown timers.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/Home.tsx",
-          "frontend/src/components/home/PromotionalCarousel.tsx",
-          "frontend/src/components/home/QuickAddEssentials.tsx",
-          "frontend/src/components/home/CategoryTiles.tsx",
-          "frontend/src/components/home/FlashDeals.tsx",
-          "frontend/src/components/common/SearchBar.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/Home.tsx",
-          "frontend/src/components/home/PromotionalCarousel.tsx",
-          "frontend/src/components/home/QuickAddEssentials.tsx",
-          "frontend/src/components/home/CategoryTiles.tsx",
-          "frontend/src/components/home/FlashDeals.tsx",
-          "frontend/src/components/common/SearchBar.tsx"
-        ]
-      },
-      {
-        "id": "REQ-3",
-        "summary": "Build a Product Catalog screen with: grid view (2 columns) of products showing product image, name, quantity/weight, MRP (struck through), discounted price, discount percentage badge, star rating (e.g., 4.2★ from 12K reviews), and an Add/quantity-selector button (+/-). Include filter controls for: price range, brand, veg/non-veg toggle, and category. Support search with autocomplete suggestions. Products should be organized into the categories defined in the home screen. Show 'Out of Stock' state for unavailable items.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/ProductCatalog.tsx",
-          "frontend/src/components/catalog/ProductCard.tsx",
-          "frontend/src/components/catalog/FilterPanel.tsx",
-          "frontend/src/components/catalog/ProductSearch.tsx",
-          "frontend/src/hooks/useProducts.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/ProductCatalog.tsx",
-          "frontend/src/components/catalog/ProductCard.tsx"
-        ]
-      },
-      {
-        "id": "REQ-4",
-        "summary": "Implement a backend data model and API for the product catalog. Store products with fields: id, name, category, subcategory, brand, images, mrp, discountedPrice, discountPercent, weightOrQuantity, rating, reviewCount, isVeg, isInStock, tags (array), and inventory count. Pre-populate with at least 50 sample products across all 8 categories (Fruits & Vegetables, Dairy & Breakfast, Snacks, Personal Care, Pharmacy, Household, Electronics, Pet Supplies) with realistic Indian product names, brands, and prices in INR. Provide query functions: getAllProducts, getProductsByCategory, searchProducts(query), and getProductById.",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-5",
-        "summary": "Build a persistent Cart system. The cart should be accessible from a sticky bottom bar visible on all non-checkout screens, showing: item count, subtotal, savings amount, and a 'Checkout' CTA button. Cart screen should list all added items with quantity controls, individual item prices, and allow item removal. Show delivery fee logic: free delivery for orders above ₹199, otherwise ₹25-50 based on order value. Show order summary with subtotal, delivery fee, total savings, and final payable amount. Include a coupon/promo code input field.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/cart/CartBottomBar.tsx",
-          "frontend/src/pages/Cart.tsx",
-          "frontend/src/components/cart/CartItem.tsx",
-          "frontend/src/components/cart/OrderSummary.tsx",
-          "frontend/src/hooks/useCart.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/Cart.tsx"
-        ]
-      },
-      {
-        "id": "REQ-6",
-        "summary": "Build a Checkout and Delivery Address screen. Show saved addresses (pre-populated with sample Murki Jaunpur addresses). Allow user to add a new address by entering: flat/house number, street/locality, landmark, and selecting from a list of Murki Jaunpur localities (e.g., Murki Bazar, Jaunpur Road, Station Area). Payment methods section should show: UPI (with mock Google Pay/PhonePe icons), Credit/Debit Card, and Cash on Delivery options. Place Order button shows order confirmation with estimated delivery time of 10-15 minutes.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/Checkout.tsx",
-          "frontend/src/components/checkout/AddressSelector.tsx",
-          "frontend/src/components/checkout/AddressForm.tsx",
-          "frontend/src/components/checkout/PaymentMethodSelector.tsx",
-          "frontend/src/pages/OrderConfirmation.tsx",
-          "frontend/src/hooks/useCheckout.ts",
-          "frontend/src/pages/PaymentSuccess.tsx",
-          "frontend/src/pages/PaymentFailure.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/Checkout.tsx",
-          "frontend/src/pages/OrderConfirmation.tsx",
-          "frontend/src/pages/PaymentSuccess.tsx",
-          "frontend/src/pages/PaymentFailure.tsx"
-        ]
-      },
-      {
-        "id": "REQ-7",
-        "summary": "Build an Order Tracking screen. Show a visual order status timeline with steps: Order Confirmed → Being Prepared → Picked Up by Rider → Out for Delivery → Delivered. Each step shows a checkmark when completed and is highlighted in orange/green. Display rider name, a mock rider avatar, estimated arrival time (countdown: e.g., 'Rider arriving in 8 mins'), and a simulated live-updating ETA that counts down over time. Show order summary (items, total) at the bottom. Include an animated delivery progress bar across the top.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/OrderTracking.tsx",
-          "frontend/src/components/tracking/StatusTimeline.tsx",
-          "frontend/src/components/tracking/RiderInfo.tsx",
-          "frontend/src/components/tracking/ProgressBar.tsx",
-          "frontend/src/hooks/useOrderTracking.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/OrderTracking.tsx"
-        ]
-      },
-      {
-        "id": "REQ-8",
-        "summary": "Build a User Profile screen with sections for: (1) Saved Addresses list with edit/delete options, (2) Order History showing past orders with date, items, total, and order status badge, (3) Loyalty Points balance with a simple points-to-rupees display (e.g., '120 points = ₹12 off next order'), (4) Language Toggle between English and Hindi (toggle changes UI labels to Hindi for key elements), and (5) a Help & Support section with FAQ items and a 'Chat Support' button (opens a mock chat UI).",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/Profile.tsx",
-          "frontend/src/components/profile/AddressList.tsx",
-          "frontend/src/components/profile/OrderHistory.tsx",
-          "frontend/src/components/profile/LoyaltyPoints.tsx",
-          "frontend/src/components/profile/LanguageToggle.tsx",
-          "frontend/src/components/profile/HelpSupport.tsx",
-          "frontend/src/hooks/useUserProfile.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/Profile.tsx"
-        ]
-      },
-      {
-        "id": "REQ-9",
-        "summary": "Build an Admin Panel accessible via a separate '/admin' route. The panel should include: (1) Dashboard overview with key metrics cards (Total Orders Today, Revenue Today, Active Riders, Items Out of Stock), (2) Product Management table listing all products with ability to update stock quantity and price inline, (3) Orders list with real-time status updates and ability to change order status, and (4) Analytics charts showing orders by hour (peak hours), top-selling products, and category-wise revenue breakdown. Admin panel should use the same orange/green theme but with a sidebar navigation layout.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/admin/AdminPanel.tsx",
-          "frontend/src/pages/admin/AdminDashboard.tsx",
-          "frontend/src/pages/admin/AdminProducts.tsx",
-          "frontend/src/pages/admin/AdminOrders.tsx",
-          "frontend/src/pages/admin/AdminAnalytics.tsx",
-          "frontend/src/components/admin/AdminSidebar.tsx",
-          "frontend/src/components/admin/StripeSetup.tsx",
-          "frontend/src/hooks/useAdminData.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/admin/AdminPanel.tsx"
+          "frontend/src/components/home/ProfileSummary.tsx",
+          "frontend/src/pages/Home.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
-    "backend/authorization/MixinAuthorization.mo",
-    "backend/authorization/access-control.mo",
-    "backend/blob-storage/Mixin.mo",
-    "backend/blob-storage/Storage.mo",
-    "backend/http-outcalls/outcall.mo",
-    "backend/main.mo",
-    "backend/stripe/stripe.mo",
     "build-request.json",
-    "build-template/Dockerfile",
-    "build-template/LICENSE",
-    "build-template/README.md",
-    "build-template/deploy.sh",
-    "build-template/icp.yaml",
-    "build-template/package.json",
-    "build-template/pnpm-lock.yaml",
-    "build-template/pnpm-workspace.yaml",
-    "build-template/scripts/prune-unused-images.js",
-    "build-template/scripts/resize-images.js",
-    "build-template/src/backend/canister.yaml",
-    "build-template/src/backend/system-idl/aaaaa-aa.did",
-    "build-template/src/frontend/canister.yaml",
-    "build-template/src/frontend/components.json",
-    "build-template/src/frontend/env.json",
-    "build-template/src/frontend/eslint-rules/no-bigint-in-query-keys.js",
-    "build-template/src/frontend/eslint-rules/require-internet-identity-provider.js",
-    "build-template/src/frontend/eslint.config.js",
-    "build-template/src/frontend/package.json",
-    "build-template/src/frontend/postcss.config.js",
-    "build-template/src/frontend/src/components/ui/accordion.tsx",
-    "build-template/src/frontend/src/components/ui/alert-dialog.tsx",
-    "build-template/src/frontend/src/components/ui/alert.tsx",
-    "build-template/src/frontend/src/components/ui/aspect-ratio.tsx",
-    "build-template/src/frontend/src/components/ui/avatar.tsx",
-    "build-template/src/frontend/src/components/ui/badge.tsx",
-    "build-template/src/frontend/src/components/ui/breadcrumb.tsx",
-    "build-template/src/frontend/src/components/ui/button.tsx",
-    "build-template/src/frontend/src/components/ui/calendar.tsx",
-    "build-template/src/frontend/src/components/ui/card.tsx",
-    "build-template/src/frontend/src/components/ui/carousel.tsx",
-    "build-template/src/frontend/src/components/ui/chart.tsx",
-    "build-template/src/frontend/src/components/ui/checkbox.tsx",
-    "build-template/src/frontend/src/components/ui/collapsible.tsx",
-    "build-template/src/frontend/src/components/ui/command.tsx",
-    "build-template/src/frontend/src/components/ui/context-menu.tsx",
-    "build-template/src/frontend/src/components/ui/dialog.tsx",
-    "build-template/src/frontend/src/components/ui/drawer.tsx",
-    "build-template/src/frontend/src/components/ui/dropdown-menu.tsx",
-    "build-template/src/frontend/src/components/ui/form.tsx",
-    "build-template/src/frontend/src/components/ui/hover-card.tsx",
-    "build-template/src/frontend/src/components/ui/input-otp.tsx",
-    "build-template/src/frontend/src/components/ui/input.tsx",
-    "build-template/src/frontend/src/components/ui/label.tsx",
-    "build-template/src/frontend/src/components/ui/menubar.tsx",
-    "build-template/src/frontend/src/components/ui/navigation-menu.tsx",
-    "build-template/src/frontend/src/components/ui/pagination.tsx",
-    "build-template/src/frontend/src/components/ui/popover.tsx",
-    "build-template/src/frontend/src/components/ui/progress.tsx",
-    "build-template/src/frontend/src/components/ui/radio-group.tsx",
-    "build-template/src/frontend/src/components/ui/resizable.tsx",
-    "build-template/src/frontend/src/components/ui/scroll-area.tsx",
-    "build-template/src/frontend/src/components/ui/select.tsx",
-    "build-template/src/frontend/src/components/ui/separator.tsx",
-    "build-template/src/frontend/src/components/ui/sheet.tsx",
-    "build-template/src/frontend/src/components/ui/sidebar.tsx",
-    "build-template/src/frontend/src/components/ui/skeleton.tsx",
-    "build-template/src/frontend/src/components/ui/slider.tsx",
-    "build-template/src/frontend/src/components/ui/sonner.tsx",
-    "build-template/src/frontend/src/components/ui/switch.tsx",
-    "build-template/src/frontend/src/components/ui/table.tsx",
-    "build-template/src/frontend/src/components/ui/tabs.tsx",
-    "build-template/src/frontend/src/components/ui/textarea.tsx",
-    "build-template/src/frontend/src/components/ui/toggle-group.tsx",
-    "build-template/src/frontend/src/components/ui/toggle.tsx",
-    "build-template/src/frontend/src/components/ui/tooltip.tsx",
-    "build-template/src/frontend/src/hooks/use-mobile.tsx",
-    "build-template/src/frontend/src/lib/utils.ts",
-    "build-template/src/frontend/tsconfig.json",
-    "build-template/src/frontend/vite.config.js",
-    "build-template/tsconfig.json",
-    "caffeine.lock.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/index.css",
-    "frontend/index.html",
-    "frontend/public/assets/generated/banner-dairy.dim_800x300.png",
-    "frontend/public/assets/generated/banner-groceries.dim_800x300.png",
-    "frontend/public/assets/generated/banner-snacks.dim_800x300.png",
-    "frontend/public/assets/generated/category-dairy.dim_96x96.png",
-    "frontend/public/assets/generated/category-electronics.dim_96x96.png",
-    "frontend/public/assets/generated/category-fruits.dim_96x96.png",
-    "frontend/public/assets/generated/category-household.dim_96x96.png",
-    "frontend/public/assets/generated/category-personal-care.dim_96x96.png",
-    "frontend/public/assets/generated/category-pet.dim_96x96.png",
-    "frontend/public/assets/generated/category-pharmacy.dim_96x96.png",
-    "frontend/public/assets/generated/category-snacks.dim_96x96.png",
-    "frontend/public/assets/generated/murkimart-logo.dim_400x120.png",
-    "frontend/public/assets/generated/rider-avatar.dim_128x128.png",
-    "frontend/src/App.tsx",
-    "frontend/src/backend.d.ts",
-    "frontend/src/backend.ts",
-    "frontend/src/components/catalog/ProductCard.tsx",
-    "frontend/src/components/common/SearchBar.tsx",
-    "frontend/src/components/home/CategoryTiles.tsx",
-    "frontend/src/components/home/FlashDeals.tsx",
-    "frontend/src/components/home/PromotionalCarousel.tsx",
-    "frontend/src/components/home/QuickAddEssentials.tsx",
-    "frontend/src/components/layout/BottomNavigation.tsx",
-    "frontend/src/components/layout/CartBottomBar.tsx",
-    "frontend/src/components/layout/Header.tsx",
-    "frontend/src/config.ts",
-    "frontend/src/declarations/backend.did.d.ts",
-    "frontend/src/declarations/backend.did.js",
-    "frontend/src/hooks/useActor.ts",
-    "frontend/src/hooks/useInternetIdentity.ts",
-    "frontend/src/hooks/useQueries.ts",
-    "frontend/src/index.css",
-    "frontend/src/lib/addressStore.ts",
-    "frontend/src/lib/cartStore.ts",
-    "frontend/src/lib/languageStore.ts",
-    "frontend/src/lib/orderStore.ts",
-    "frontend/src/lib/products.ts",
-    "frontend/src/main.tsx",
-    "frontend/src/pages/Cart.tsx",
-    "frontend/src/pages/Checkout.tsx",
+    "frontend/src/components/home/ProfileSummary.tsx",
     "frontend/src/pages/Home.tsx",
-    "frontend/src/pages/OrderConfirmation.tsx",
-    "frontend/src/pages/OrderTracking.tsx",
-    "frontend/src/pages/PaymentFailure.tsx",
-    "frontend/src/pages/PaymentSuccess.tsx",
-    "frontend/src/pages/ProductCatalog.tsx",
-    "frontend/src/pages/Profile.tsx",
-    "frontend/src/pages/admin/AdminPanel.tsx",
-    "frontend/src/ui-summary.json",
-    "frontend/src/utils/StorageClient.ts",
-    "frontend/src/utils/urlParams.ts",
-    "frontend/tailwind.config.js",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

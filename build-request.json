@@ -1,287 +1,44 @@
 {
   "kind": "build_request",
-  "title": "MurkiMart — Hyperlocal Quick Commerce App (Blinkit-style)",
+  "title": "Retry: Add profile/account summary section to Home page bottom",
   "projectName": "MurkiMart",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-1",
-      "text": "Apply a vibrant orange and green visual theme across the entire app branded as 'MurkiMart'. Use bold orange (#F97316) as primary accent, deep green (#16A34A) as secondary, white backgrounds, and clean sans-serif typography. The home screen should feel energetic and trustworthy, with prominent delivery promise ('Delivery in 10-15 mins') displayed at the top. Ensure consistent color usage across all screens, buttons, badges, and navigation.",
+      "id": "REQ-38",
+      "text": "Add a profile/account summary section at the bottom of the Home page (frontend/src/pages/Home.tsx). The section should display: (1) the logged-in user's name and phone number sourced from authStore, or a 'Login / Sign Up' prompt if not authenticated; (2) a row of quick-link cards/buttons for 'My Orders', 'Saved Addresses', 'Loyalty Points', and 'Help & Support' — each tapping navigates to the Profile page; (3) a 'Go to Profile' button that navigates to the Profile page. Style the section consistently with the MurkiMart orange (#F97316) and green (#16A34A) theme, using card/tile layout with icons. Place it below the CustomerCareContact banner and above any footer padding.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-1"
         ],
         "quotes": [
-          "vibrant orange/green theme matching Blinkit",
-          "Brand it 'MurkiMart'"
+          "retry the build with the profile section and cart additions to the bottom of the homepage"
         ]
       },
       "acceptanceCriteria": [
-        "Orange and green color palette applied consistently across all screens",
-        "'MurkiMart' branding visible in header/logo",
-        "10-15 min delivery promise badge displayed prominently on home screen",
-        "All buttons, CTAs, and interactive elements follow the orange/green palette"
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "text": "Build a Home Feed screen with: (1) an auto-scrolling carousel of promotional banners featuring Murki Jaunpur local deals, (2) a 'MurkiMart Now' section with quick-add buttons for the top 20 essentials (e.g., Milk, Bread, Eggs, Parle-G, Atta, Rice, Dal, Onions, Tomatoes, Bananas, Butter, Paneer, Curd, Biscuits, Chips, Maggi, Cooking Oil, Sugar, Salt, Tea), (3) scrollable horizontal category tiles (Fruits & Vegetables, Dairy & Breakfast, Snacks, Personal Care, Pharmacy, Household, Electronics, Pet Supplies), and (4) a 'Flash Deals' section showing time-limited offers with countdown timers.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "Home Feed: Carousel banners for Murki Jaunpur deals, 'Blinkit Now' quick-add buttons for top 50 essentials, category tiles"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Carousel banners auto-scroll and display at least 3 promotional slides",
-        "Top 20 essentials quick-add section renders with product image, name, price, and Add button",
-        "Category tiles display with icons and navigate to filtered product catalog",
-        "Flash Deals section shows discounted items with countdown timers",
-        "Home feed is scrollable vertically with sticky search bar at top"
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "text": "Build a Product Catalog screen with: grid view (2 columns) of products showing product image, name, quantity/weight, MRP (struck through), discounted price, discount percentage badge, star rating (e.g., 4.2★ from 12K reviews), and an Add/quantity-selector button (+/-). Include filter controls for: price range, brand, veg/non-veg toggle, and category. Support search with autocomplete suggestions. Products should be organized into the categories defined in the home screen. Show 'Out of Stock' state for unavailable items.",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "Product Catalog: Grid view with high-res images, prices (MRP vs discounted), ratings (4.2★ from 12K), 'Add 2x' quantity selector"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Product grid displays in 2-column layout with all required fields",
-        "MRP displayed with strikethrough; discounted price shown in bold",
-        "Discount percentage badge shown on eligible products",
-        "Add button turns into +/- quantity selector after first tap",
-        "Filter panel allows filtering by price range, brand, and veg/non-veg",
-        "Search bar shows autocomplete suggestions as user types",
-        "Out-of-stock products show disabled state"
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "text": "Implement a backend data model and API for the product catalog. Store products with fields: id, name, category, subcategory, brand, images, mrp, discountedPrice, discountPercent, weightOrQuantity, rating, reviewCount, isVeg, isInStock, tags (array), and inventory count. Pre-populate with at least 50 sample products across all 8 categories (Fruits & Vegetables, Dairy & Breakfast, Snacks, Personal Care, Pharmacy, Household, Electronics, Pet Supplies) with realistic Indian product names, brands, and prices in INR. Provide query functions: getAllProducts, getProductsByCategory, searchProducts(query), and getProductById.",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "5,000+ SKUs across groceries, fresh produce, dairy, snacks, personal care, electronics, medicines, pet supplies",
-          "Hyperlocal Inventory"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Product data model includes all specified fields",
-        "At least 50 sample products pre-populated across 8 categories",
-        "getAllProducts returns paginated list",
-        "getProductsByCategory filters correctly by category name",
-        "searchProducts returns relevant results for partial name/brand queries",
-        "getProductById returns full product details"
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "text": "Build a persistent Cart system. The cart should be accessible from a sticky bottom bar visible on all non-checkout screens, showing: item count, subtotal, savings amount, and a 'Checkout' CTA button. Cart screen should list all added items with quantity controls, individual item prices, and allow item removal. Show delivery fee logic: free delivery for orders above ₹199, otherwise ₹25-50 based on order value. Show order summary with subtotal, delivery fee, total savings, and final payable amount. Include a coupon/promo code input field.",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "Cart: Persistent bottom bar showing subtotal, savings, delivery fee (₹25-50 within Murki). 'Checkout in 1 tap'",
-          "No minimum order; free delivery over ₹199"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Sticky cart bar visible on Home, Catalog, and Product screens",
-        "Cart bar shows correct item count, subtotal, and savings",
-        "Tapping cart bar opens full cart screen",
-        "Quantity can be increased/decreased/removed from cart screen",
-        "Delivery fee shows ₹0 when subtotal exceeds ₹199, otherwise ₹25-₹50",
-        "Coupon code input applies mock discount to total",
-        "Order summary section shows subtotal, delivery fee, savings, and total"
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "text": "Build a Checkout and Delivery Address screen. Show saved addresses (pre-populated with sample Murki Jaunpur addresses). Allow user to add a new address by entering: flat/house number, street/locality, landmark, and selecting from a list of Murki Jaunpur localities (e.g., Murki Bazar, Jaunpur Road, Station Area). Payment methods section should show: UPI (with mock Google Pay/PhonePe icons), Credit/Debit Card, and Cash on Delivery options. Place Order button shows order confirmation with estimated delivery time of 10-15 minutes.",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "Delivery Address: Auto-detect Murki Jaunpur locations; easy pin-drop map for precise doorsteps, saved addresses",
-          "UPI/Google Pay/PhonePe integration, COD"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Saved addresses displayed with option to select or add new",
-        "New address form includes house number, street, landmark, and locality dropdown",
-        "Locality dropdown contains Murki Jaunpur area names",
-        "Payment method selection shows UPI, Card, and COD options",
-        "Place Order creates an order record and shows confirmation screen",
-        "Confirmation screen shows order ID, estimated delivery time (10-15 mins), and summary"
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "text": "Build an Order Tracking screen. Show a visual order status timeline with steps: Order Confirmed → Being Prepared → Picked Up by Rider → Out for Delivery → Delivered. Each step shows a checkmark when completed and is highlighted in orange/green. Display rider name, a mock rider avatar, estimated arrival time (countdown: e.g., 'Rider arriving in 8 mins'), and a simulated live-updating ETA that counts down over time. Show order summary (items, total) at the bottom. Include an animated delivery progress bar across the top.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "Order Tracking: Full-screen map zoomed to Murki Jaunpur roads with rider avatar, step-by-step status (Order Confirmed → Picked Up → Out for Delivery → Delivered)",
-          "ETA countdown, and 'Rider arriving in X mins' notifications"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Order status timeline shows all 5 steps with icons",
-        "Completed steps show checkmark and are highlighted",
-        "Rider name and avatar displayed during 'Out for Delivery' stage",
-        "ETA countdown timer updates every second",
-        "Animated progress bar reflects overall delivery progress",
-        "Order item summary visible at the bottom of the screen"
-      ]
-    },
-    {
-      "id": "REQ-8",
-      "text": "Build a User Profile screen with sections for: (1) Saved Addresses list with edit/delete options, (2) Order History showing past orders with date, items, total, and order status badge, (3) Loyalty Points balance with a simple points-to-rupees display (e.g., '120 points = ₹12 off next order'), (4) Language Toggle between English and Hindi (toggle changes UI labels to Hindi for key elements), and (5) a Help & Support section with FAQ items and a 'Chat Support' button (opens a mock chat UI).",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "Profile: Saved Murki addresses, order history, loyalty points, chat support (Hindi), language toggle"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Profile screen has all 5 sections listed",
-        "Saved addresses can be viewed and deleted",
-        "Order history shows at least 3 mock past orders with correct fields",
-        "Loyalty points balance displayed with redemption value",
-        "Language toggle switches key UI labels between English and Hindi",
-        "Chat support section opens a simple FAQ + mock chat interface"
-      ]
-    },
-    {
-      "id": "REQ-9",
-      "text": "Build an Admin Panel accessible via a separate '/admin' route. The panel should include: (1) Dashboard overview with key metrics cards (Total Orders Today, Revenue Today, Active Riders, Items Out of Stock), (2) Product Management table listing all products with ability to update stock quantity and price inline, (3) Orders list with real-time status updates and ability to change order status, and (4) Analytics charts showing orders by hour (peak hours), top-selling products, and category-wise revenue breakdown. Admin panel should use the same orange/green theme but with a sidebar navigation layout.",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "Admin panel for local store managers to update stock/pricing",
-          "Analytics dashboard tracking orders, popular items, peak hours in Murki"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Admin panel accessible at /admin route",
-        "Dashboard shows 4 metric cards with live data from backend",
-        "Product table allows inline editing of price and stock quantity",
-        "Orders list shows all orders with status change controls",
-        "Analytics section includes peak hours chart, top products list, and category revenue chart",
-        "Sidebar navigation links to Dashboard, Products, Orders, and Analytics sections"
-      ]
-    },
-    {
-      "id": "REQ-10",
-      "text": "Implement the core backend data models and actor functions for: (1) Orders — createOrder(userId, items, addressId, paymentMethod), getOrderById(id), getUserOrders(userId), updateOrderStatus(orderId, status); (2) Users — getOrCreateUser(id), getUserAddresses(userId), addAddress(userId, address), deleteAddress(userId, addressId); (3) Loyalty Points — addPoints(userId, points), getPoints(userId); (4) Admin stats — getOrderStats(), getTopProducts(), getHourlyOrderCounts(). Use stable variables for all persistent state.",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "Real-time inventory sync from Murki Jaunpur partner stores",
-          "Admin panel for local store managers to update stock/pricing",
-          "order history, loyalty points"
-        ]
-      },
-      "acceptanceCriteria": [
-        "createOrder stores order and returns order ID",
-        "getUserOrders returns all orders for a user ID",
-        "updateOrderStatus changes order status and persists correctly",
-        "addAddress stores new address linked to user",
-        "getPoints returns correct loyalty balance for a user",
-        "getOrderStats returns total order count and revenue totals",
-        "getHourlyOrderCounts returns order distribution across 24 hours",
-        "All state stored in stable variables"
-      ]
-    },
-    {
-      "id": "REQ-11",
-      "text": "Add app-wide bottom navigation bar with 4 tabs: Home (house icon), Categories (grid icon), Cart (cart icon with item count badge), and Profile (person icon). The active tab should be highlighted in orange. Navigation should persist across screen transitions. The cart tab badge should update in real-time as items are added/removed.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "clean, intuitive UI",
-          "Home Feed",
-          "Product Catalog",
-          "Cart",
-          "Profile"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Bottom navigation bar visible on Home, Categories, Cart, and Profile screens",
-        "Active tab highlighted in orange",
-        "Cart tab shows item count badge when cart is non-empty",
-        "Tapping each tab navigates to the correct screen",
-        "Navigation state persists correctly between tab switches"
+        "When the user is logged in (authStore.isLoggedIn === true), the section displays the user's name and phone number from authStore",
+        "When the user is not logged in, the section displays a 'Login / Sign Up' prompt card",
+        "A row of four quick-link cards is shown: 'My Orders', 'Saved Addresses', 'Loyalty Points', and 'Help & Support', each with an icon",
+        "Tapping any quick-link card navigates to the Profile page",
+        "A 'Go to Profile' button is present and navigates to the Profile page",
+        "The section is placed below the CustomerCareContact banner on the Home page",
+        "The section uses MurkiMart orange (#F97316) and green (#16A34A) consistently in card/tile styling"
       ]
     }
   ],
   "constraints": [
-    "All payment integrations (UPI, Google Pay, PhonePe) must be implemented as mock/simulated UI only — no real payment gateway integration",
-    "GPS/live map tracking must be simulated with animated mock data — no real geolocation or maps API integration",
-    "Push notifications must be simulated within the app UI — no external push notification service",
-    "Voice search must be presented as a UI element only — no real speech recognition integration",
-    "All data must be stored in Motoko stable variables in the single backend actor",
-    "Admin panel must be accessible at /admin route within the same frontend app"
+    "Do not modify any files listed in frontend.immutablePaths",
+    "Use existing authStore (frontend/src/lib/authStore.ts) for authentication state — do not create a new store",
+    "Navigation must use the existing navigationStore or page-stack navigation pattern already in use in App.tsx"
   ],
   "nonGoals": [
-    "Real payment processing or gateway integration",
-    "Real-time GPS tracking with actual maps API",
-    "Mobile app build or Play Store / App Store publishing",
-    "SMS or email notification delivery",
-    "Real voice recognition or Hindi speech-to-text",
-    "External inventory sync with actual partner stores",
-    "User authentication via Internet Identity (anonymous session assumed)",
-    "Multiple backend services or microservices architecture"
+    "Do not add new backend endpoints or modify backend/main.mo",
+    "Do not create new auth or address store files — use existing ones",
+    "Do not modify the Profile page itself"
   ],
   "imageRequirements": {
-    "required": [
-      "MurkiMart logo with orange lightning bolt and green leaf motif, bold wordmark on white background (murkimart-logo.dim_400x120.png)",
-      "Promotional banner for groceries deal — vibrant orange gradient with vegetables and 'Flat 30% OFF' text overlay (banner-groceries.dim_800x300.png)",
-      "Promotional banner for dairy products — green gradient with milk and paneer imagery and 'Fresh Daily' text (banner-dairy.dim_800x300.png)",
-      "Promotional banner for snacks sale — warm yellow-orange with chips and biscuits imagery and 'Snack Time Deals' text (banner-snacks.dim_800x300.png)",
-      "Delivery rider avatar illustration — cartoon style male rider in orange jacket on bicycle (rider-avatar.dim_128x128.png)",
-      "Category icon for Fruits and Vegetables — colorful illustrated apple and carrot (category-fruits.dim_96x96.png)",
-      "Category icon for Dairy and Breakfast — illustrated milk carton and eggs (category-dairy.dim_96x96.png)",
-      "Category icon for Snacks — illustrated chips bag and biscuit packet (category-snacks.dim_96x96.png)",
-      "Category icon for Personal Care — illustrated shampoo bottle and soap bar (category-personal-care.dim_96x96.png)",
-      "Category icon for Pharmacy — illustrated green cross and medicine strip (category-pharmacy.dim_96x96.png)",
-      "Category icon for Household — illustrated broom and cleaning spray bottle (category-household.dim_96x96.png)",
-      "Category icon for Electronics — illustrated earphones and phone charger (category-electronics.dim_96x96.png)",
-      "Category icon for Pet Supplies — illustrated dog paw and cat face (category-pet.dim_96x96.png)"
-    ],
+    "required": [],
     "edits": []
   }
 }

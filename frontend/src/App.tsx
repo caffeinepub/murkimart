@@ -1,167 +1,176 @@
-import React, { useState } from 'react';
-import Header from '@/components/layout/Header';
-import BottomNavigation from '@/components/layout/BottomNavigation';
-import CartBottomBar from '@/components/layout/CartBottomBar';
-import Home from '@/pages/Home';
-import ProductCatalog from '@/pages/ProductCatalog';
-import Cart from '@/pages/Cart';
-import Checkout from '@/pages/Checkout';
-import OrderConfirmation from '@/pages/OrderConfirmation';
-import OrderTracking from '@/pages/OrderTracking';
-import Profile from '@/pages/Profile';
-import AdminPanel from '@/pages/admin/AdminPanel';
-import PaymentSuccess from '@/pages/PaymentSuccess';
-import PaymentFailure from '@/pages/PaymentFailure';
+import React, { useState, useEffect } from 'react';
 import { Toaster } from '@/components/ui/sonner';
+import Home from './pages/Home';
+import ProductCatalog from './pages/ProductCatalog';
+import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
+import OrderTracking from './pages/OrderTracking';
+import OrderConfirmation from './pages/OrderConfirmation';
+import Profile from './pages/Profile';
+import Login from './pages/Login';
+import AdminPanel from './pages/admin/AdminPanel';
+import PaymentSuccess from './pages/PaymentSuccess';
+import PaymentFailure from './pages/PaymentFailure';
+import FirstVisitModal from './components/onboarding/FirstVisitModal';
+import { useNavigationStore } from './lib/navigationStore';
+import { useAuthStore } from './lib/authStore';
 
 type Page =
   | 'home'
   | 'catalog'
   | 'cart'
   | 'checkout'
+  | 'tracking'
   | 'order-confirmation'
-  | 'order-tracking'
   | 'profile'
+  | 'login'
   | 'admin'
   | 'payment-success'
   | 'payment-failure';
 
-const PAGES_WITH_BOTTOM_NAV: Page[] = ['home', 'catalog', 'cart', 'profile'];
-const PAGES_WITH_CART_BAR: Page[] = ['home', 'catalog'];
-
 export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [pageHistory, setPageHistory] = useState<Page[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined);
   const [currentOrderId, setCurrentOrderId] = useState<string>('');
 
-  // Check for admin route via hash
-  React.useEffect(() => {
-    const hash = window.location.hash;
-    if (hash === '#/admin' || window.location.pathname === '/admin') {
-      setCurrentPage('admin');
-    }
-    if (hash === '#/payment-success' || window.location.pathname === '/payment-success') {
-      setCurrentPage('payment-success');
-    }
-    if (hash === '#/payment-failure' || window.location.pathname === '/payment-failure') {
-      setCurrentPage('payment-failure');
-    }
+  const setNavigateTo = useNavigationStore((s) => s.setNavigateTo);
+  const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
+
+  // Show onboarding modal only when user is not logged in
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  // Wait for Zustand to rehydrate from localStorage before deciding to show modal
+  useEffect(() => {
+    // Small delay to allow Zustand persist to rehydrate
+    const timer = setTimeout(() => {
+      if (!useAuthStore.getState().isLoggedIn) {
+        setShowOnboarding(true);
+      }
+    }, 100);
+    return () => clearTimeout(timer);
   }, []);
 
-  const navigate = (page: Page) => {
+  // If user logs in (e.g. via modal), hide the modal
+  useEffect(() => {
+    if (isLoggedIn) {
+      setShowOnboarding(false);
+    }
+  }, [isLoggedIn]);
+
+  const navigate = (page: Page, category?: string) => {
+    setPageHistory(prev => [...prev, currentPage]);
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (category !== undefined) setSelectedCategory(category);
   };
 
-  const handleBottomNav = (tab: string) => {
-    navigate(tab as Page);
+  const navigateStr = (page: string) => {
+    navigate(page as Page);
   };
 
-  const handleCategorySelect = (categoryId: string) => {
-    setSelectedCategory(categoryId);
-    navigate('catalog');
+  const goBack = () => {
+    if (pageHistory.length > 0) {
+      const prev = pageHistory[pageHistory.length - 1];
+      setPageHistory(h => h.slice(0, -1));
+      setCurrentPage(prev);
+    } else {
+      setCurrentPage('home');
+    }
   };
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    if (query) navigate('catalog');
-  };
+  // Register navigateStr in the store so hooks (e.g. useInstantOrder) can trigger navigation
+  useEffect(() => {
+    setNavigateTo(navigateStr);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const handleOrderPlaced = (orderId: string) => {
-    setCurrentOrderId(orderId);
-    navigate('order-confirmation');
-  };
-
-  const showBottomNav = PAGES_WITH_BOTTOM_NAV.includes(currentPage);
-  const showCartBar = PAGES_WITH_CART_BAR.includes(currentPage);
-  const showHeader = !['admin', 'payment-success', 'payment-failure', 'order-confirmation'].includes(currentPage);
-
-  const activeTab = PAGES_WITH_BOTTOM_NAV.includes(currentPage) ? currentPage : '';
-
-  return (
-    <div className="min-h-screen bg-background max-w-lg mx-auto relative">
-      {showHeader && <Header />}
-
-      <main className={`${showHeader ? '' : ''} ${showBottomNav ? 'pb-16' : ''}`}>
-        {currentPage === 'home' && (
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'home':
+        return (
           <Home
-            onSearch={handleSearch}
-            onCategorySelect={handleCategorySelect}
-            onNavigate={(page) => navigate(page as Page)}
+            onSearch={(query) => {
+              if (query) navigate('catalog');
+            }}
+            onCategorySelect={(cat) => {
+              setSelectedCategory(cat);
+              navigate('catalog');
+            }}
+            onNavigate={navigateStr}
           />
-        )}
-
-        {currentPage === 'catalog' && (
+        );
+      case 'catalog':
+        return (
           <ProductCatalog
             initialCategory={selectedCategory}
-            initialSearch={searchQuery}
+            onBack={goBack}
           />
-        )}
-
-        {currentPage === 'cart' && (
+        );
+      case 'cart':
+        return (
           <Cart
             onCheckout={() => navigate('checkout')}
             onContinueShopping={() => navigate('home')}
           />
-        )}
-
-        {currentPage === 'checkout' && (
+        );
+      case 'checkout':
+        return (
           <Checkout
-            onOrderPlaced={handleOrderPlaced}
-            onBack={() => navigate('cart')}
+            onOrderPlaced={(orderId) => {
+              setCurrentOrderId(orderId);
+              navigate('order-confirmation');
+            }}
+            onBack={goBack}
           />
-        )}
-
-        {currentPage === 'order-confirmation' && currentOrderId && (
+        );
+      case 'order-confirmation':
+        return (
           <OrderConfirmation
             orderId={currentOrderId}
-            onTrackOrder={() => navigate('order-tracking')}
+            onTrackOrder={() => navigate('tracking')}
             onContinueShopping={() => navigate('home')}
           />
-        )}
-
-        {currentPage === 'order-tracking' && currentOrderId && (
-          <OrderTracking
-            orderId={currentOrderId}
-            onBack={() => navigate('home')}
-          />
-        )}
-
-        {currentPage === 'profile' && (
-          <Profile
-            onNavigate={(page) => navigate(page as Page)}
-          />
-        )}
-
-        {currentPage === 'admin' && (
-          <AdminPanel onBack={() => navigate('home')} />
-        )}
-
-        {currentPage === 'payment-success' && (
-          <PaymentSuccess onContinue={() => navigate('home')} />
-        )}
-
-        {currentPage === 'payment-failure' && (
+        );
+      case 'tracking':
+        return <OrderTracking onBack={goBack} />;
+      case 'profile':
+        return <Profile onNavigate={navigateStr} />;
+      case 'login':
+        return <Login onNavigate={navigateStr} />;
+      case 'admin':
+        return <AdminPanel onBack={goBack} />;
+      case 'payment-success':
+        return <PaymentSuccess onContinue={() => navigate('home')} />;
+      case 'payment-failure':
+        return (
           <PaymentFailure
             onRetry={() => navigate('checkout')}
             onBack={() => navigate('cart')}
           />
-        )}
-      </main>
+        );
+      default:
+        return (
+          <Home
+            onSearch={(query) => {
+              if (query) navigate('catalog');
+            }}
+            onCategorySelect={(cat) => {
+              setSelectedCategory(cat);
+              navigate('catalog');
+            }}
+            onNavigate={navigateStr}
+          />
+        );
+    }
+  };
 
-      {showCartBar && (
-        <CartBottomBar onCheckout={() => navigate('cart')} />
+  return (
+    <>
+      {renderPage()}
+      <Toaster position="top-center" richColors />
+      {showOnboarding && (
+        <FirstVisitModal onClose={() => setShowOnboarding(false)} />
       )}
-
-      {showBottomNav && (
-        <BottomNavigation
-          currentPage={activeTab}
-          onNavigate={handleBottomNav}
-        />
-      )}
-
-      <Toaster />
-    </div>
+    </>
   );
 }

@@ -9,7 +9,7 @@ interface CartProps {
 }
 
 export default function Cart({ onCheckout, onContinueShopping }: CartProps) {
-  const { items, updateQuantity, removeFromCart, applyCoupon, removeCoupon, couponCode, couponDiscount, getSubtotal, getSavings, getDeliveryFee, getTotal } = useCartStore();
+  const { items, updateQuantity, removeFromCart, applyCoupon, removeCoupon, couponCode, couponDiscount, getSubtotal, getSavings, getTotal } = useCartStore();
   const { t } = useLanguageStore();
   const [couponInput, setCouponInput] = useState('');
   const [couponError, setCouponError] = useState('');
@@ -17,8 +17,9 @@ export default function Cart({ onCheckout, onContinueShopping }: CartProps) {
 
   const subtotal = getSubtotal();
   const savings = getSavings();
-  const deliveryFee = getDeliveryFee();
   const total = getTotal();
+
+  const VALID_COUPONS: Record<string, number> = { 'MURKI10': 10, 'FIRST50': 50, 'SAVE20': 20, 'JAUNPUR15': 15 };
 
   const handleApplyCoupon = () => {
     if (!couponInput.trim()) return;
@@ -31,8 +32,6 @@ export default function Cart({ onCheckout, onContinueShopping }: CartProps) {
       setCouponSuccess('');
     }
   };
-
-  const VALID_COUPONS: Record<string, number> = { 'MURKI10': 10, 'FIRST50': 50, 'SAVE20': 20, 'JAUNPUR15': 15 };
 
   if (items.length === 0) {
     return (
@@ -58,30 +57,28 @@ export default function Cart({ onCheckout, onContinueShopping }: CartProps) {
         <p className="text-xs text-muted-foreground">{items.reduce((s, i) => s + i.quantity, 0)} items</p>
       </div>
 
-      {/* Delivery Banner */}
-      {subtotal < 199 && (
-        <div className="mx-4 mt-3 bg-primary/10 rounded-xl px-4 py-2.5 flex items-center gap-2">
-          <span className="text-lg">🚚</span>
-          <p className="text-xs font-medium text-primary">
-            Add ₹{199 - subtotal} more for <strong>FREE delivery</strong>
-          </p>
-        </div>
-      )}
+      {/* Free Delivery Banner */}
+      <div className="mx-4 mt-3 bg-secondary/10 rounded-xl px-4 py-2.5 flex items-center gap-2">
+        <span className="text-lg">🚚</span>
+        <p className="text-xs font-medium text-secondary">
+          <strong>FREE delivery</strong> on all orders!
+        </p>
+      </div>
 
       {/* Items */}
       <div className="px-4 mt-3 space-y-3">
         {items.map(({ product, quantity }) => (
           <div key={product.id} className="flex items-center gap-3 bg-white rounded-2xl border border-border p-3">
             <div className="w-14 h-14 bg-muted rounded-xl flex items-center justify-center shrink-0">
-              <span className="text-3xl">{product.emoji}</span>
+              <span className="text-3xl">{product.image}</span>
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-foreground line-clamp-1">{product.name}</p>
-              <p className="text-xs text-muted-foreground">{product.weightOrQuantity}</p>
+              <p className="text-xs text-muted-foreground">{product.unit}</p>
               <div className="flex items-center gap-1.5 mt-0.5">
                 <span className="text-sm font-bold text-foreground">₹{product.discountedPrice * quantity}</span>
-                {product.mrp > product.discountedPrice && (
-                  <span className="text-xs text-muted-foreground line-through">₹{product.mrp * quantity}</span>
+                {product.price > product.discountedPrice && (
+                  <span className="text-xs text-muted-foreground line-through">₹{product.price * quantity}</span>
                 )}
               </div>
             </div>
@@ -152,11 +149,7 @@ export default function Cart({ onCheckout, onContinueShopping }: CartProps) {
           )}
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Delivery Fee</span>
-            {deliveryFee === 0 ? (
-              <span className="font-medium text-secondary">FREE 🎉</span>
-            ) : (
-              <span className="font-medium">₹{deliveryFee}</span>
-            )}
+            <span className="font-medium text-secondary">FREE 🎉</span>
           </div>
           {couponDiscount > 0 && (
             <div className="flex justify-between text-sm">

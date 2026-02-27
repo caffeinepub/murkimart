@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import {
   MapPin, Package, Star, HelpCircle, Globe, Trash2,
-  ChevronRight, MessageCircle, Send, X
+  ChevronRight, MessageCircle, Send, X, LogOut, LogIn
 } from 'lucide-react';
 import { useAddressStore } from '@/lib/addressStore';
 import { useOrderStore } from '@/lib/orderStore';
 import { useLanguageStore } from '@/lib/languageStore';
+import { useAuthStore } from '@/lib/authStore';
 import { Badge } from '@/components/ui/badge';
 
 const FAQ_ITEMS = [
@@ -28,6 +29,7 @@ export default function Profile({ onNavigate }: ProfileProps) {
   const { addresses, deleteAddress } = useAddressStore();
   const { orders } = useOrderStore();
   const { language, setLanguage, t } = useLanguageStore();
+  const { isLoggedIn, user, logout } = useAuthStore();
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [showChat, setShowChat] = useState(false);
   const [chatMessages, setChatMessages] = useState(MOCK_CHAT);
@@ -69,6 +71,71 @@ export default function Profile({ onNavigate }: ProfileProps) {
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    onNavigate('login');
+  };
+
+  // ── Not logged in: show login prompt ──────────────────────────────────────
+  if (!isLoggedIn) {
+    return (
+      <div className="pb-8">
+        {/* Header */}
+        <div className="bg-gradient-to-br from-primary to-primary/80 px-4 pt-6 pb-8">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center border-2 border-white/40">
+              <span className="text-3xl">👤</span>
+            </div>
+            <div>
+              <h1 className="font-display font-bold text-xl text-white">My Account</h1>
+              <p className="text-white/80 text-sm">Sign in to access your profile</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Login Prompt Card */}
+        <div className="mx-4 -mt-4">
+          <button
+            onClick={() => onNavigate('login')}
+            className="w-full bg-white rounded-2xl shadow-card border border-border p-5 flex items-center gap-4 hover:bg-muted/20 active:scale-[0.98] transition-all"
+          >
+            <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center shrink-0">
+              <LogIn className="w-6 h-6 text-primary" />
+            </div>
+            <div className="flex-1 text-left">
+              <p className="font-bold text-foreground text-base">Login / Sign Up</p>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Access orders, addresses, loyalty points & more
+              </p>
+            </div>
+            <ChevronRight className="w-5 h-5 text-muted-foreground shrink-0" />
+          </button>
+        </div>
+
+        {/* Benefits */}
+        <div className="px-4 mt-5 space-y-3">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide px-1">
+            Why sign in?
+          </p>
+          {[
+            { icon: '📦', title: 'Track your orders', desc: 'Real-time order tracking & history' },
+            { icon: '⭐', title: 'Earn loyalty points', desc: 'Get rewards on every purchase' },
+            { icon: '📍', title: 'Save addresses', desc: 'Quick checkout with saved locations' },
+          ].map((item) => (
+            <div key={item.title} className="bg-white rounded-2xl border border-border p-4 flex items-center gap-3">
+              <span className="text-2xl">{item.icon}</span>
+              <div>
+                <p className="text-sm font-semibold text-foreground">{item.title}</p>
+                <p className="text-xs text-muted-foreground">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // ── Logged in: full profile ────────────────────────────────────────────────
   const sections = [
     { id: 'addresses', label: t('savedAddresses'), icon: MapPin, count: addresses.length },
     { id: 'orders', label: t('orderHistory'), icon: Package, count: orders.length },
@@ -85,14 +152,26 @@ export default function Profile({ onNavigate }: ProfileProps) {
           <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center border-2 border-white/40">
             <span className="text-3xl">👤</span>
           </div>
-          <div>
-            <h1 className="font-display font-bold text-xl text-white">My Account</h1>
-            <p className="text-white/80 text-sm">Murki Jaunpur, UP</p>
+          <div className="flex-1">
+            <h1 className="font-display font-bold text-xl text-white">
+              {user?.name || 'My Account'}
+            </h1>
+            <p className="text-white/80 text-sm">
+              {user?.phone ? `+91 ${user.phone}` : user?.email || 'Murki Jaunpur, UP'}
+            </p>
             <div className="flex items-center gap-1.5 mt-1">
               <Star className="w-3.5 h-3.5 text-yellow-300 fill-yellow-300" />
               <span className="text-white/90 text-xs font-medium">{loyaltyPoints} Loyalty Points</span>
             </div>
           </div>
+          {/* Logout Button */}
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-semibold px-3 py-2 rounded-xl transition-colors"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            Logout
+          </button>
         </div>
       </div>
 
@@ -166,28 +245,32 @@ export default function Profile({ onNavigate }: ProfileProps) {
                 {/* Order History */}
                 {id === 'orders' && (
                   <div className="divide-y divide-border">
-                    {orders.slice(0, 5).map(order => (
-                      <div key={order.id} className="p-4">
-                        <div className="flex items-start justify-between mb-2">
-                          <div>
-                            <p className="text-sm font-bold text-foreground">{order.id}</p>
-                            <p className="text-xs text-muted-foreground">
-                              {order.createdAt.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
-                            </p>
+                    {orders.length === 0 ? (
+                      <p className="text-sm text-muted-foreground text-center py-6">No orders yet</p>
+                    ) : (
+                      orders.slice(0, 5).map(order => (
+                        <div key={order.id} className="p-4">
+                          <div className="flex items-start justify-between mb-2">
+                            <div>
+                              <p className="text-sm font-bold text-foreground">{order.id}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {order.createdAt.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                              </p>
+                            </div>
+                            <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${getStatusColor(order.status)}`}>
+                              {getStatusLabel(order.status)}
+                            </span>
                           </div>
-                          <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${getStatusColor(order.status)}`}>
-                            {getStatusLabel(order.status)}
-                          </span>
+                          <div className="flex items-center justify-between">
+                            <p className="text-xs text-muted-foreground">{order.address}</p>
+                            <p className="text-sm font-bold text-foreground">₹{order.total}</p>
+                          </div>
+                          {order.savings > 0 && (
+                            <p className="text-xs text-secondary mt-0.5">Saved ₹{order.savings}</p>
+                          )}
                         </div>
-                        <div className="flex items-center justify-between">
-                          <p className="text-xs text-muted-foreground">{order.address}</p>
-                          <p className="text-sm font-bold text-foreground">₹{order.total}</p>
-                        </div>
-                        {order.savings > 0 && (
-                          <p className="text-xs text-secondary mt-0.5">Saved ₹{order.savings}</p>
-                        )}
-                      </div>
-                    ))}
+                      ))
+                    )}
                   </div>
                 )}
 
@@ -264,7 +347,7 @@ export default function Profile({ onNavigate }: ProfileProps) {
                             onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)}
                             className="w-full flex items-center justify-between p-3 text-left"
                           >
-                            <span className="text-sm font-medium text-foreground">{faq.q}</span>
+                            <span className="text-xs font-semibold text-foreground pr-2">{faq.q}</span>
                             <ChevronRight className={`w-4 h-4 text-muted-foreground shrink-0 transition-transform ${expandedFaq === idx ? 'rotate-90' : ''}`} />
                           </button>
                           {expandedFaq === idx && (
@@ -275,13 +358,54 @@ export default function Profile({ onNavigate }: ProfileProps) {
                         </div>
                       ))}
                     </div>
+
+                    {/* Live Chat */}
                     <button
-                      onClick={() => setShowChat(true)}
-                      className="w-full flex items-center justify-center gap-2 bg-primary text-white py-3 rounded-xl font-bold text-sm"
+                      onClick={() => setShowChat(!showChat)}
+                      className="w-full flex items-center gap-2 bg-secondary/10 text-secondary font-semibold text-sm py-3 rounded-xl justify-center"
                     >
                       <MessageCircle className="w-4 h-4" />
-                      Chat Support (Hindi/English)
+                      {showChat ? 'Close Chat' : 'Chat with Support'}
                     </button>
+
+                    {showChat && (
+                      <div className="mt-3 border border-border rounded-xl overflow-hidden">
+                        <div className="bg-secondary/10 px-3 py-2 flex items-center justify-between">
+                          <span className="text-xs font-bold text-secondary">Live Support</span>
+                          <button onClick={() => setShowChat(false)}>
+                            <X className="w-4 h-4 text-muted-foreground" />
+                          </button>
+                        </div>
+                        <div className="h-40 overflow-y-auto p-3 space-y-2 bg-muted/20">
+                          {chatMessages.map((msg, i) => (
+                            <div key={i} className={`flex ${msg.from === 'user' ? 'justify-end' : 'justify-start'}`}>
+                              <div className={`max-w-[80%] text-xs px-3 py-2 rounded-xl ${
+                                msg.from === 'user'
+                                  ? 'bg-primary text-white rounded-br-none'
+                                  : 'bg-white text-foreground border border-border rounded-bl-none'
+                              }`}>
+                                {msg.text}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="flex items-center gap-2 p-2 border-t border-border bg-white">
+                          <input
+                            value={chatInput}
+                            onChange={(e) => setChatInput(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleSendChat()}
+                            placeholder="Type a message..."
+                            className="flex-1 text-xs outline-none bg-transparent text-foreground placeholder:text-muted-foreground"
+                          />
+                          <button
+                            onClick={handleSendChat}
+                            className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center"
+                          >
+                            <Send className="w-3.5 h-3.5 text-white" />
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -289,72 +413,6 @@ export default function Profile({ onNavigate }: ProfileProps) {
           </div>
         ))}
       </div>
-
-      {/* Footer */}
-      <div className="px-4 mt-8 text-center">
-        <p className="text-xs text-muted-foreground">
-          MurkiMart v1.0 · Murki Jaunpur, UP
-        </p>
-        <p className="text-xs text-muted-foreground mt-1">
-          Built with ❤️ using{' '}
-          <a
-            href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname || 'murkimart')}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary font-medium"
-          >
-            caffeine.ai
-          </a>
-          {' '}· © {new Date().getFullYear()}
-        </p>
-      </div>
-
-      {/* Chat Modal */}
-      {showChat && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-background">
-          <div className="flex items-center gap-3 px-4 py-3 bg-primary text-white">
-            <button onClick={() => setShowChat(false)}>
-              <X className="w-5 h-5" />
-            </button>
-            <div className="flex-1">
-              <p className="font-bold text-sm">MurkiMart Support</p>
-              <p className="text-xs text-white/80">Usually replies in minutes</p>
-            </div>
-            <div className="w-2 h-2 bg-green-300 rounded-full" />
-          </div>
-
-          <div className="flex-1 overflow-y-auto p-4 space-y-3">
-            {chatMessages.map((msg, idx) => (
-              <div key={idx} className={`flex ${msg.from === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm ${
-                  msg.from === 'user'
-                    ? 'bg-primary text-white rounded-br-sm'
-                    : 'bg-muted text-foreground rounded-bl-sm'
-                }`}>
-                  {msg.text}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="px-4 py-3 border-t border-border bg-white flex gap-2">
-            <input
-              type="text"
-              value={chatInput}
-              onChange={e => setChatInput(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && handleSendChat()}
-              placeholder="Type your message... (Hindi/English)"
-              className="flex-1 bg-muted rounded-xl px-4 py-2.5 text-sm outline-none"
-            />
-            <button
-              onClick={handleSendChat}
-              className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center"
-            >
-              <Send className="w-4 h-4 text-white" />
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

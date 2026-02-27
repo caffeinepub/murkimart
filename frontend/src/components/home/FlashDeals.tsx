@@ -29,7 +29,13 @@ function useCountdown(endTime: Date) {
 }
 
 const FLASH_END = new Date(Date.now() + 4 * 3600000 + 23 * 60000 + 45000);
-const FLASH_PRODUCTS = ALL_PRODUCTS.filter(p => p.discountPercent >= 15).slice(0, 4);
+// Filter products that have at least 15% discount based on price vs discountedPrice
+const FLASH_PRODUCTS = ALL_PRODUCTS.filter(p => {
+  const discountPct = p.price > p.discountedPrice
+    ? Math.round(((p.price - p.discountedPrice) / p.price) * 100)
+    : 0;
+  return discountPct >= 15;
+}).slice(0, 4);
 
 export default function FlashDeals() {
   const { t } = useLanguageStore();

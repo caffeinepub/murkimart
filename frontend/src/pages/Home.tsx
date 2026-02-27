@@ -4,6 +4,8 @@ import PromotionalCarousel from '@/components/home/PromotionalCarousel';
 import CategoryTiles from '@/components/home/CategoryTiles';
 import QuickAddEssentials from '@/components/home/QuickAddEssentials';
 import FlashDeals from '@/components/home/FlashDeals';
+import CustomerCareContact from '@/components/home/CustomerCareContact';
+import ProfileSummary from '@/components/home/ProfileSummary';
 
 interface HomeProps {
   onSearch: (query: string) => void;
@@ -26,8 +28,13 @@ export default function Home({ onSearch, onCategorySelect, onNavigate }: HomePro
       <CategoryTiles onCategorySelect={(id) => { onCategorySelect(id); onNavigate('catalog'); }} />
       <div className="my-2 mx-4 h-px bg-border" />
       <QuickAddEssentials />
-      <div className="my-2 mx-4 h-px bg-border" />
+      {/* Extra spacing around the featured customer care banner */}
+      <div className="my-3 mx-4 h-px bg-border" />
+      <CustomerCareContact />
+      <div className="my-3 mx-4 h-px bg-border" />
       <FlashDeals />
+      <div className="my-3 mx-4 h-px bg-border" />
+      <ProfileSummary />
     </div>
   );
 }

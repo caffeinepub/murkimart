@@ -16,25 +16,24 @@ const HOURLY_DATA = Array.from({ length: 24 }, (_, h) => ({
 }));
 
 const CATEGORY_REVENUE = [
-  { name: 'Dairy', value: 4200, color: '#16a34a' },
-  { name: 'Snacks', value: 3100, color: '#f97316' },
-  { name: 'Fruits', value: 2800, color: '#eab308' },
-  { name: 'Personal', value: 2200, color: '#3b82f6' },
-  { name: 'Pharmacy', value: 1800, color: '#ef4444' },
-  { name: 'Household', value: 1500, color: '#8b5cf6' },
+  { name: 'Vegetables', value: 4200, color: '#16a34a' },
+  { name: 'Eggs', value: 3100, color: '#f97316' },
+  { name: 'Meat', value: 2800, color: '#eab308' },
 ];
 
 export default function AdminPanel({ onBack }: AdminPanelProps) {
   const [activeSection, setActiveSection] = useState<AdminSection>('dashboard');
   const { orders, updateOrderStatus } = useOrderStore();
-  const [products, setProducts] = useState(ALL_PRODUCTS.map(p => ({ ...p, editPrice: p.discountedPrice, editStock: p.isInStock ? 50 : 0 })));
+  const [products, setProducts] = useState(
+    ALL_PRODUCTS.map(p => ({ ...p, editPrice: p.discountedPrice, editStock: p.inStock ? 50 : 0 }))
+  );
 
   const totalRevenue = orders.reduce((s, o) => s + o.total, 0);
   const todayOrders = orders.filter(o => {
     const today = new Date();
     return o.createdAt.toDateString() === today.toDateString();
   }).length;
-  const outOfStock = ALL_PRODUCTS.filter(p => !p.isInStock).length;
+  const outOfStock = ALL_PRODUCTS.filter(p => !p.inStock).length;
 
   const navItems = [
     { id: 'dashboard' as AdminSection, label: 'Dashboard', icon: LayoutDashboard },
@@ -95,7 +94,7 @@ export default function AdminPanel({ onBack }: AdminPanelProps) {
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${color}`}>
                     <Icon className="w-5 h-5" />
                   </div>
-                  <p className="font-display font-bold text-xl text-foreground">{value}</p>
+                  <p className="text-2xl font-display font-bold text-foreground">{value}</p>
                   <p className="text-xs text-muted-foreground mt-0.5">{label}</p>
                 </div>
               ))}
@@ -104,63 +103,80 @@ export default function AdminPanel({ onBack }: AdminPanelProps) {
             {/* Recent Orders */}
             <div className="bg-white rounded-2xl border border-border p-4">
               <h3 className="font-semibold text-sm text-foreground mb-3">Recent Orders</h3>
-              <div className="space-y-2">
-                {orders.slice(0, 3).map(order => (
-                  <div key={order.id} className="flex items-center justify-between py-2 border-b border-border last:border-0">
-                    <div>
-                      <p className="text-sm font-medium text-foreground">{order.id}</p>
-                      <p className="text-xs text-muted-foreground">{order.address}</p>
+              {orders.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-4">No orders yet</p>
+              ) : (
+                <div className="space-y-2">
+                  {orders.slice(0, 3).map(order => (
+                    <div key={order.id} className="flex items-center justify-between py-2 border-b border-border last:border-0">
+                      <div>
+                        <p className="text-xs font-bold text-foreground">{order.id}</p>
+                        <p className="text-[10px] text-muted-foreground">{order.address.split(',')[0]}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs font-bold text-foreground">₹{order.total}</p>
+                        <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full font-medium">
+                          {order.status}
+                        </span>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-sm font-bold text-foreground">₹{order.total}</p>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                        order.status === 'delivered' ? 'bg-secondary/10 text-secondary' : 'bg-primary/10 text-primary'
-                      }`}>
-                        {order.status.replace('_', ' ')}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )}
 
-        {/* Products */}
+        {/* Product Management */}
         {activeSection === 'products' && (
           <div className="space-y-3">
             <h2 className="font-display font-bold text-base text-foreground">Product Management</h2>
-            <p className="text-xs text-muted-foreground">{products.length} products · Tap to edit price/stock</p>
             {products.map((product, idx) => (
-              <div key={product.id} className="bg-white rounded-2xl border border-border p-3">
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">{product.emoji}</span>
+              <div key={product.id} className="bg-white rounded-2xl border border-border p-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="text-2xl">{product.image}</span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-foreground truncate">{product.name}</p>
-                    <p className="text-xs text-muted-foreground">{product.brand} · {product.weightOrQuantity}</p>
+                    <p className="text-sm font-semibold text-foreground line-clamp-1">{product.name}</p>
+                    <p className="text-xs text-muted-foreground">{product.brand} · {product.unit}</p>
                   </div>
-                  <div className={`w-2 h-2 rounded-full ${product.isInStock ? 'bg-secondary' : 'bg-destructive'}`} />
+                  <div className={`w-2 h-2 rounded-full ${product.inStock ? 'bg-secondary' : 'bg-destructive'}`} />
                 </div>
-                <div className="grid grid-cols-2 gap-2 mt-3">
+                <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-[10px] text-muted-foreground block mb-1">Price (₹)</label>
+                    <label className="text-[10px] text-muted-foreground font-medium">Price (₹)</label>
                     <input
                       type="number"
                       value={product.editPrice}
-                      onChange={e => setProducts(prev => prev.map((p, i) => i === idx ? { ...p, editPrice: Number(e.target.value) } : p))}
-                      className="w-full bg-muted rounded-lg px-2 py-1.5 text-sm outline-none font-medium"
+                      onChange={(e) => {
+                        const val = Number(e.target.value);
+                        setProducts(prev => prev.map((p, i) => i === idx ? { ...p, editPrice: val } : p));
+                      }}
+                      className="w-full mt-1 bg-muted rounded-lg px-2 py-1.5 text-sm outline-none"
                     />
                   </div>
                   <div>
-                    <label className="text-[10px] text-muted-foreground block mb-1">Stock (units)</label>
+                    <label className="text-[10px] text-muted-foreground font-medium">Stock (units)</label>
                     <input
                       type="number"
                       value={product.editStock}
-                      onChange={e => setProducts(prev => prev.map((p, i) => i === idx ? { ...p, editStock: Number(e.target.value) } : p))}
-                      className="w-full bg-muted rounded-lg px-2 py-1.5 text-sm outline-none font-medium"
+                      onChange={(e) => {
+                        const val = Number(e.target.value);
+                        setProducts(prev => prev.map((p, i) => i === idx ? { ...p, editStock: val } : p));
+                      }}
+                      className="w-full mt-1 bg-muted rounded-lg px-2 py-1.5 text-sm outline-none"
                     />
                   </div>
                 </div>
+                <button
+                  onClick={() => {
+                    setProducts(prev => prev.map((p, i) =>
+                      i === idx ? { ...p, discountedPrice: p.editPrice, inStock: p.editStock > 0 } : p
+                    ));
+                  }}
+                  className="mt-3 w-full bg-primary/10 text-primary text-xs font-bold py-2 rounded-xl hover:bg-primary hover:text-white transition-all"
+                >
+                  Save Changes
+                </button>
               </div>
             ))}
           </div>
@@ -170,33 +186,39 @@ export default function AdminPanel({ onBack }: AdminPanelProps) {
         {activeSection === 'orders' && (
           <div className="space-y-3">
             <h2 className="font-display font-bold text-base text-foreground">All Orders</h2>
-            <p className="text-xs text-muted-foreground">{orders.length} total orders</p>
-            {orders.map(order => (
-              <div key={order.id} className="bg-white rounded-2xl border border-border p-4">
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <p className="text-sm font-bold text-foreground">{order.id}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {order.createdAt.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })} · {order.paymentMethod}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-0.5">{order.address}</p>
-                  </div>
-                  <p className="font-bold text-foreground">₹{order.total}</p>
-                </div>
-                <div>
-                  <label className="text-[10px] text-muted-foreground block mb-1">Update Status</label>
-                  <select
-                    value={order.status}
-                    onChange={e => updateOrderStatus(order.id, e.target.value as typeof order.status)}
-                    className="w-full bg-muted rounded-xl px-3 py-2 text-xs font-semibold outline-none"
-                  >
-                    {STATUS_OPTIONS.map(s => (
-                      <option key={s} value={s}>{s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</option>
-                    ))}
-                  </select>
-                </div>
+            {orders.length === 0 ? (
+              <div className="bg-white rounded-2xl border border-border p-8 text-center">
+                <ShoppingBag className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
+                <p className="text-sm text-muted-foreground">No orders yet</p>
               </div>
-            ))}
+            ) : (
+              orders.map(order => (
+                <div key={order.id} className="bg-white rounded-2xl border border-border p-4">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <p className="text-sm font-bold text-foreground">{order.id}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {order.createdAt.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{order.address}</p>
+                    </div>
+                    <p className="text-sm font-bold text-foreground">₹{order.total}</p>
+                  </div>
+                  <div>
+                    <label className="text-[10px] text-muted-foreground font-medium">Update Status</label>
+                    <select
+                      value={order.status}
+                      onChange={(e) => updateOrderStatus(order.id, e.target.value as typeof STATUS_OPTIONS[number])}
+                      className="w-full mt-1 bg-muted rounded-xl px-3 py-2 text-xs font-semibold outline-none"
+                    >
+                      {STATUS_OPTIONS.map(s => (
+                        <option key={s} value={s}>{s.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         )}
 
@@ -207,9 +229,9 @@ export default function AdminPanel({ onBack }: AdminPanelProps) {
 
             {/* Peak Hours */}
             <div className="bg-white rounded-2xl border border-border p-4">
-              <h3 className="font-semibold text-sm text-foreground mb-3">Orders by Hour (Peak Hours)</h3>
-              <ResponsiveContainer width="100%" height={180}>
-                <BarChart data={HOURLY_DATA.filter((_, i) => i % 2 === 0)} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
+              <h3 className="font-semibold text-sm text-foreground mb-3">Peak Order Hours</h3>
+              <ResponsiveContainer width="100%" height={160}>
+                <BarChart data={HOURLY_DATA.filter((_, i) => i % 3 === 0)} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                   <XAxis dataKey="hour" tick={{ fontSize: 9 }} />
                   <YAxis tick={{ fontSize: 9 }} />
@@ -221,22 +243,22 @@ export default function AdminPanel({ onBack }: AdminPanelProps) {
 
             {/* Top Products */}
             <div className="bg-white rounded-2xl border border-border p-4">
-              <h3 className="font-semibold text-sm text-foreground mb-3">Top Selling Products</h3>
-              <div className="space-y-2">
-                {ALL_PRODUCTS.sort((a, b) => b.reviewCount - a.reviewCount).slice(0, 5).map((p, idx) => (
+              <h3 className="font-semibold text-sm text-foreground mb-3">Top Products by Reviews</h3>
+              <div className="space-y-3">
+                {ALL_PRODUCTS.sort((a, b) => b.reviews - a.reviews).slice(0, 5).map((p, idx) => (
                   <div key={p.id} className="flex items-center gap-3">
                     <span className="text-xs font-bold text-muted-foreground w-4">#{idx + 1}</span>
-                    <span className="text-lg">{p.emoji}</span>
+                    <span className="text-lg">{p.image}</span>
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-semibold text-foreground truncate">{p.name}</p>
                       <div className="w-full bg-muted rounded-full h-1.5 mt-1">
                         <div
                           className="bg-primary h-1.5 rounded-full"
-                          style={{ width: `${(p.reviewCount / ALL_PRODUCTS[0].reviewCount) * 100}%` }}
+                          style={{ width: `${(p.reviews / (ALL_PRODUCTS.sort((a, b) => b.reviews - a.reviews)[0]?.reviews || 1)) * 100}%` }}
                         />
                       </div>
                     </div>
-                    <span className="text-xs font-bold text-foreground">{(p.reviewCount / 1000).toFixed(1)}K</span>
+                    <span className="text-xs font-bold text-foreground">{(p.reviews / 1000).toFixed(1)}K</span>
                   </div>
                 ))}
               </div>
@@ -244,8 +266,8 @@ export default function AdminPanel({ onBack }: AdminPanelProps) {
 
             {/* Category Revenue */}
             <div className="bg-white rounded-2xl border border-border p-4">
-              <h3 className="font-semibold text-sm text-foreground mb-3">Category Revenue (₹)</h3>
-              <ResponsiveContainer width="100%" height={200}>
+              <h3 className="font-semibold text-sm text-foreground mb-3">Category Revenue</h3>
+              <ResponsiveContainer width="100%" height={180}>
                 <PieChart>
                   <Pie
                     data={CATEGORY_REVENUE}
@@ -253,9 +275,8 @@ export default function AdminPanel({ onBack }: AdminPanelProps) {
                     cy="50%"
                     innerRadius={50}
                     outerRadius={80}
+                    paddingAngle={3}
                     dataKey="value"
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                    labelLine={false}
                   >
                     {CATEGORY_REVENUE.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
@@ -264,6 +285,14 @@ export default function AdminPanel({ onBack }: AdminPanelProps) {
                   <Tooltip formatter={(value) => [`₹${value}`, 'Revenue']} />
                 </PieChart>
               </ResponsiveContainer>
+              <div className="flex flex-wrap gap-2 justify-center mt-2">
+                {CATEGORY_REVENUE.map(cat => (
+                  <div key={cat.name} className="flex items-center gap-1.5">
+                    <div className="w-2.5 h-2.5 rounded-full" style={{ background: cat.color }} />
+                    <span className="text-[10px] text-muted-foreground">{cat.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}

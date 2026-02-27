@@ -83,24 +83,18 @@ export const useCartStore = create<CartStore>((set, get) => ({
 
   getSavings: () => {
     return get().items.reduce((sum, item) => {
-      const saving = (item.product.mrp - item.product.discountedPrice) * item.quantity;
-      return sum + saving;
+      const saving = (item.product.price - item.product.discountedPrice) * item.quantity;
+      return sum + Math.max(0, saving);
     }, 0);
   },
 
-  getDeliveryFee: () => {
-    const subtotal = get().getSubtotal();
-    if (subtotal === 0) return 0;
-    if (subtotal >= 199) return 0;
-    if (subtotal >= 100) return 25;
-    return 50;
-  },
+  // Delivery is always free
+  getDeliveryFee: () => 0,
 
   getTotal: () => {
     const subtotal = get().getSubtotal();
-    const delivery = get().getDeliveryFee();
     const coupon = get().couponDiscount;
-    return Math.max(0, subtotal + delivery - coupon);
+    return Math.max(0, subtotal - coupon);
   },
 
   getItemCount: () => {
