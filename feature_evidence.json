@@ -1,0 +1,215 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-apply-a-vibrant-orange-and-green-visual-theme-across-the-entire-app-branded-as-murkimart-use-bold-orange-f97316-as-primary-accent-deep-green-16a34a-as-secondary-white-backgrounds-and-clean-sans-serif-typography-the-home-screen-should-feel-energetic-and-trustworthy-with-prominent-delivery-promise-delivery-in-10-15-mins-displayed-at-the-top-ensure-consistent-color-usage-across-all-screens-buttons-badges-and-navigation",
+      "featureTitle": "Apply a vibrant orange and green visual theme across the entire app branded as 'MurkiMart'. Use bold orange (#F97316) as primary accent, deep green (#16A34A) as secondary, white backgrounds, and clean sans-serif typography. The home screen should feel energetic and trustworthy, with prominent delivery promise ('Delivery in 10-15 mins') displayed at the top. Ensure consistent color usage across all screens, buttons, badges, and navigation.",
+      "files": [
+        "frontend/src/components/layout/Header.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "stripe@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-a-home-feed-screen-with-1-an-auto-scrolling-carousel-of-promotional-banners-featuring-murki-jaunpur-local-deals-2-a-murkimart-now-section-with-quick-add-buttons-for-the-top-20-essentials-e-g-milk-bread-eggs-parle-g-atta-rice-dal-onions-tomatoes-bananas-butter-paneer-curd-biscuits-chips-maggi-cooking-oil-sugar-salt-tea-3-scrollable-horizontal-category-tiles-fruits-vegetables-dairy-breakfast-snacks-personal-care-pharmacy-household-electronics-pet-supplies-and-4-a-flash-deals-section-showing-time-limited-offers-with-countdown-timers",
+      "featureTitle": "Build a Home Feed screen with: (1) an auto-scrolling carousel of promotional banners featuring Murki Jaunpur local deals, (2) a 'MurkiMart Now' section with quick-add buttons for the top 20 essentials (e.g., Milk, Bread, Eggs, Parle-G, Atta, Rice, Dal, Onions, Tomatoes, Bananas, Butter, Paneer, Curd, Biscuits, Chips, Maggi, Cooking Oil, Sugar, Salt, Tea), (3) scrollable horizontal category tiles (Fruits & Vegetables, Dairy & Breakfast, Snacks, Personal Care, Pharmacy, Household, Electronics, Pet Supplies), and (4) a 'Flash Deals' section showing time-limited offers with countdown timers.",
+      "files": [
+        "frontend/src/components/common/SearchBar.tsx",
+        "frontend/src/components/home/CategoryTiles.tsx",
+        "frontend/src/components/home/FlashDeals.tsx",
+        "frontend/src/components/home/PromotionalCarousel.tsx",
+        "frontend/src/components/home/QuickAddEssentials.tsx",
+        "frontend/src/pages/Home.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "stripe@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-a-product-catalog-screen-with-grid-view-2-columns-of-products-showing-product-image-name-quantity-weight-mrp-struck-through-discounted-price-discount-percentage-badge-star-rating-e-g-4-2-from-12k-reviews-and-an-add-quantity-selector-button-include-filter-controls-for-price-range-brand-veg-non-veg-toggle-and-category-support-search-with-autocomplete-suggestions-products-should-be-organized-into-the-categories-defined-in-the-home-screen-show-out-of-stock-state-for-unavailable-items",
+      "featureTitle": "Build a Product Catalog screen with: grid view (2 columns) of products showing product image, name, quantity/weight, MRP (struck through), discounted price, discount percentage badge, star rating (e.g., 4.2★ from 12K reviews), and an Add/quantity-selector button (+/-). Include filter controls for: price range, brand, veg/non-veg toggle, and category. Support search with autocomplete suggestions. Products should be organized into the categories defined in the home screen. Show 'Out of Stock' state for unavailable items.",
+      "files": [
+        "frontend/src/components/catalog/ProductCard.tsx",
+        "frontend/src/pages/ProductCatalog.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "stripe@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-a-persistent-cart-system-the-cart-should-be-accessible-from-a-sticky-bottom-bar-visible-on-all-non-checkout-screens-showing-item-count-subtotal-savings-amount-and-a-checkout-cta-button-cart-screen-should-list-all-added-items-with-quantity-controls-individual-item-prices-and-allow-item-removal-show-delivery-fee-logic-free-delivery-for-orders-above-199-otherwise-25-50-based-on-order-value-show-order-summary-with-subtotal-delivery-fee-total-savings-and-final-payable-amount-include-a-coupon-promo-code-input-field",
+      "featureTitle": "Build a persistent Cart system. The cart should be accessible from a sticky bottom bar visible on all non-checkout screens, showing: item count, subtotal, savings amount, and a 'Checkout' CTA button. Cart screen should list all added items with quantity controls, individual item prices, and allow item removal. Show delivery fee logic: free delivery for orders above ₹199, otherwise ₹25-50 based on order value. Show order summary with subtotal, delivery fee, total savings, and final payable amount. Include a coupon/promo code input field.",
+      "files": [
+        "frontend/src/pages/Cart.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "stripe@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-a-checkout-and-delivery-address-screen-show-saved-addresses-pre-populated-with-sample-murki-jaunpur-addresses-allow-user-to-add-a-new-address-by-entering-flat-house-number-street-locality-landmark-and-selecting-from-a-list-of-murki-jaunpur-localities-e-g-murki-bazar-jaunpur-road-station-area-payment-methods-section-should-show-upi-with-mock-google-pay-phonepe-icons-credit-debit-card-and-cash-on-delivery-options-place-order-button-shows-order-confirmation-with-estimated-delivery-time-of-10-15-minutes",
+      "featureTitle": "Build a Checkout and Delivery Address screen. Show saved addresses (pre-populated with sample Murki Jaunpur addresses). Allow user to add a new address by entering: flat/house number, street/locality, landmark, and selecting from a list of Murki Jaunpur localities (e.g., Murki Bazar, Jaunpur Road, Station Area). Payment methods section should show: UPI (with mock Google Pay/PhonePe icons), Credit/Debit Card, and Cash on Delivery options. Place Order button shows order confirmation with estimated delivery time of 10-15 minutes.",
+      "files": [
+        "frontend/src/pages/Checkout.tsx",
+        "frontend/src/pages/OrderConfirmation.tsx",
+        "frontend/src/pages/PaymentFailure.tsx",
+        "frontend/src/pages/PaymentSuccess.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "stripe@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-an-order-tracking-screen-show-a-visual-order-status-timeline-with-steps-order-confirmed-being-prepared-picked-up-by-rider-out-for-delivery-delivered-each-step-shows-a-checkmark-when-completed-and-is-highlighted-in-orange-green-display-rider-name-a-mock-rider-avatar-estimated-arrival-time-countdown-e-g-rider-arriving-in-8-mins-and-a-simulated-live-updating-eta-that-counts-down-over-time-show-order-summary-items-total-at-the-bottom-include-an-animated-delivery-progress-bar-across-the-top",
+      "featureTitle": "Build an Order Tracking screen. Show a visual order status timeline with steps: Order Confirmed → Being Prepared → Picked Up by Rider → Out for Delivery → Delivered. Each step shows a checkmark when completed and is highlighted in orange/green. Display rider name, a mock rider avatar, estimated arrival time (countdown: e.g., 'Rider arriving in 8 mins'), and a simulated live-updating ETA that counts down over time. Show order summary (items, total) at the bottom. Include an animated delivery progress bar across the top.",
+      "files": [
+        "frontend/src/pages/OrderTracking.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "stripe@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-a-user-profile-screen-with-sections-for-1-saved-addresses-list-with-edit-delete-options-2-order-history-showing-past-orders-with-date-items-total-and-order-status-badge-3-loyalty-points-balance-with-a-simple-points-to-rupees-display-e-g-120-points-12-off-next-order-4-language-toggle-between-english-and-hindi-toggle-changes-ui-labels-to-hindi-for-key-elements-and-5-a-help-support-section-with-faq-items-and-a-chat-support-button-opens-a-mock-chat-ui",
+      "featureTitle": "Build a User Profile screen with sections for: (1) Saved Addresses list with edit/delete options, (2) Order History showing past orders with date, items, total, and order status badge, (3) Loyalty Points balance with a simple points-to-rupees display (e.g., '120 points = ₹12 off next order'), (4) Language Toggle between English and Hindi (toggle changes UI labels to Hindi for key elements), and (5) a Help & Support section with FAQ items and a 'Chat Support' button (opens a mock chat UI).",
+      "files": [
+        "frontend/src/pages/Profile.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "stripe@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-build-an-admin-panel-accessible-via-a-separate-admin-route-the-panel-should-include-1-dashboard-overview-with-key-metrics-cards-total-orders-today-revenue-today-active-riders-items-out-of-stock-2-product-management-table-listing-all-products-with-ability-to-update-stock-quantity-and-price-inline-3-orders-list-with-real-time-status-updates-and-ability-to-change-order-status-and-4-analytics-charts-showing-orders-by-hour-peak-hours-top-selling-products-and-category-wise-revenue-breakdown-admin-panel-should-use-the-same-orange-green-theme-but-with-a-sidebar-navigation-layout",
+      "featureTitle": "Build an Admin Panel accessible via a separate '/admin' route. The panel should include: (1) Dashboard overview with key metrics cards (Total Orders Today, Revenue Today, Active Riders, Items Out of Stock), (2) Product Management table listing all products with ability to update stock quantity and price inline, (3) Orders list with real-time status updates and ability to change order status, and (4) Analytics charts showing orders by hour (peak hours), top-selling products, and category-wise revenue breakdown. Admin panel should use the same orange/green theme but with a sidebar navigation layout.",
+      "files": [
+        "frontend/src/pages/admin/AdminPanel.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "stripe@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-app-wide-bottom-navigation-bar-with-4-tabs-home-house-icon-categories-grid-icon-cart-cart-icon-with-item-count-badge-and-profile-person-icon-the-active-tab-should-be-highlighted-in-orange-navigation-should-persist-across-screen-transitions-the-cart-tab-badge-should-update-in-real-time-as-items-are-added-removed",
+      "featureTitle": "Add app-wide bottom navigation bar with 4 tabs: Home (house icon), Categories (grid icon), Cart (cart icon with item count badge), and Profile (person icon). The active tab should be highlighted in orange. Navigation should persist across screen transitions. The cart tab badge should update in real-time as items are added/removed.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/layout/BottomNavigation.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "blob-storage@4.0.0",
+        "stripe@3.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "http-outcalls@3.0.0"
+      ],
+      "testIds": [
+        "REQ-11"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "frontend/src/components/common/SearchBar.tsx": "Sticky search bar component with autocomplete suggestions, voice search icon, and clear button. Fixed conflicting `relative`/`sticky` Tailwind position classes by nesting `relative` inside the `sticky` wrapper div.",
+  "frontend/src/App.tsx": "Main application component managing page state and navigation between all screens (Home, Catalog, Cart, Checkout, Order Confirmation, Order Tracking, Profile, Admin, Payment pages). Renders Header, BottomNavigation, and CartBottomBar conditionally based on the active page.",
+  "frontend/src/pages/OrderTracking.tsx": "Live order tracking page with animated status timeline (5 steps), rider info with avatar, ETA countdown timer, and delivery progress bar. Simulates order status progression automatically every 8 seconds.",
+  "frontend/src/pages/Profile.tsx": "User profile page with expandable sections for saved addresses, order history, loyalty points, language toggle (English/Hindi), and help & support with FAQ and mock chat interface.",
+  "frontend/src/pages/admin/AdminPanel.tsx": "Admin panel with tabbed navigation for Dashboard (metrics cards), Product Management (inline price/stock editing), Orders list (status updates), and Analytics (charts for peak hours, top products, category revenue).",
+  "frontend/src/pages/PaymentSuccess.tsx": "Simple payment success confirmation screen with green checkmark and continue shopping button.",
+  "frontend/src/pages/PaymentFailure.tsx": "Payment failure screen with error icon, retry button, and back to cart option."
+}

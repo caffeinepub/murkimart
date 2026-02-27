@@ -1,0 +1,150 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-27T08:51:22.197Z",
+  "summary": "The diff implements a substantial portion of the MurkiMart frontend requirements (UI components, stores, pages) and includes a backend file, but the backend (main.mo) is a generic Stripe/blob-storage template — not the MurkiMart-specific Motoko backend. Many frontend pages referenced in App.tsx are truncated/omitted from the diff. Key missing areas include: the proper Motoko backend with all required data models and stable variables, and several frontend features need verification from omitted files.",
+  "missing_requirements": [
+    {
+      "id": "REQ-4",
+      "requirement": "Implement a backend data model and API for the product catalog with stable variables and query functions: getAllProducts, getProductsByCategory, searchProducts, getProductById. Pre-populate 50+ sample products across 8 categories.",
+      "reason": "The backend/main.mo contains only a Stripe payment integration template with blob storage and authorization mixins — no product data model, no stable variables for products, no getAllProducts/getProductsByCategory/searchProducts/getProductById functions.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "requirement": "Implement backend actor functions for Orders, Users, Loyalty Points, and Admin stats using stable variables.",
+      "reason": "The backend/main.mo contains no order, user, loyalty points, or admin stats data models or functions. All state management appears to be frontend-only without backend persistence.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/lib/orderStore.ts",
+        "frontend/src/lib/addressStore.ts"
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "requirement": "Admin Panel at /admin route with dashboard metrics cards pulling live data from backend, product management table with inline editing, orders list with status change, and analytics charts.",
+      "reason": "AdminPanel is referenced in App.tsx and the /admin route logic exists, but the admin panel page file is among the omitted files. The backend provides no admin stats endpoints, so live data from backend cannot be fulfilled.",
+      "evidence": [
+        "frontend/src/App.tsx",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "requirement": "Order Tracking screen with animated delivery progress bar, 5-step status timeline with checkmarks, rider avatar display, and ETA countdown timer.",
+      "reason": "OrderTracking is referenced in App.tsx but the file is among the 18 omitted added files and cannot be verified as implemented.",
+      "evidence": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "requirement": "Checkout and Delivery Address screen with saved addresses, new address form with Murki Jaunpur locality dropdown, UPI/Card/COD payment options, and order confirmation screen.",
+      "reason": "Checkout and OrderConfirmation pages are referenced in App.tsx but are among the omitted added files and cannot be verified.",
+      "evidence": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "requirement": "User Profile screen with saved addresses (edit/delete), order history (3+ mock orders), loyalty points balance, language toggle, and Help & Support with mock chat UI.",
+      "reason": "Profile page is referenced in App.tsx but is among the omitted added files. The full profile UI including chat support cannot be verified.",
+      "evidence": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "requirement": "Product Catalog screen with 2-column grid, all required product fields, filter controls (price range, brand, veg/non-veg), search with autocomplete, and out-of-stock state.",
+      "reason": "ProductCatalog page is referenced in App.tsx but is among the omitted added files and cannot be fully verified.",
+      "evidence": [
+        "frontend/src/App.tsx"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Stripe payment checkout session integration with createCheckoutSession, getStripeSessionStatus, and setStripeConfiguration functions in the backend.",
+      "reason": "The build request explicitly states all payment integrations must be mock/simulated UI only with no real payment gateway integration. The backend implements a real Stripe integration and the frontend includes PaymentSuccess/PaymentFailure pages and Stripe-specific hooks.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "description": "Internet Identity authentication integration with useInternetIdentity hook, AuthClient, and actor-based identity management.",
+      "reason": "The build request explicitly lists User authentication via Internet Identity as a non-goal with anonymous session assumed. The diff includes a full Internet Identity provider implementation.",
+      "evidence": [
+        "frontend/src/hooks/useInternetIdentity.ts",
+        "frontend/src/hooks/useActor.ts",
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    },
+    {
+      "description": "Admin token-based access control with _initializeAccessControlWithSecret and MixinAuthorization in the backend.",
+      "reason": "The build request does not request any authentication or authorization system. The backend implements a full access control system.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/hooks/useActor.ts"
+      ]
+    },
+    {
+      "description": "PaymentSuccess and PaymentFailure dedicated pages for Stripe redirect flows.",
+      "reason": "These pages are specific to real payment gateway redirect flows which was explicitly excluded as a non-goal in the build request.",
+      "evidence": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "description": "Blob storage mixin integrated into the backend actor.",
+      "reason": "The build request specifies all data must be stored in Motoko stable variables in a single backend actor. A blob storage mixin was not requested.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    }
+  ],
+  "confidence": 0.62,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/catalog/ProductCard.tsx",
+    "frontend/src/components/common/SearchBar.tsx",
+    "frontend/src/components/home/CategoryTiles.tsx",
+    "frontend/src/components/home/FlashDeals.tsx",
+    "frontend/src/components/home/PromotionalCarousel.tsx",
+    "frontend/src/components/home/QuickAddEssentials.tsx",
+    "frontend/src/components/layout/BottomNavigation.tsx",
+    "frontend/src/components/layout/CartBottomBar.tsx",
+    "frontend/src/components/layout/Header.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/lib/addressStore.ts",
+    "frontend/src/lib/cartStore.ts",
+    "frontend/src/lib/languageStore.ts",
+    "frontend/src/lib/orderStore.ts",
+    "frontend/src/lib/products.ts",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/Cart.tsx",
+    "frontend/src/pages/Checkout.tsx",
+    "frontend/src/pages/Home.tsx",
+    "frontend/src/pages/OrderConfirmation.tsx",
+    "frontend/src/pages/OrderTracking.tsx",
+    "frontend/src/pages/PaymentFailure.tsx",
+    "frontend/src/pages/PaymentSuccess.tsx",
+    "frontend/src/pages/ProductCatalog.tsx",
+    "frontend/src/pages/Profile.tsx",
+    "frontend/src/pages/admin/AdminPanel.tsx",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}
