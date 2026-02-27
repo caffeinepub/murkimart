@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { CheckCircle, Clock, MapPin, Package } from 'lucide-react';
+import React from 'react';
+import { CheckCircle, Clock, MapPin } from 'lucide-react';
 import { useOrderStore } from '@/lib/orderStore';
 
 interface OrderConfirmationProps {
@@ -8,7 +8,7 @@ interface OrderConfirmationProps {
   onContinueShopping: () => void;
 }
 
-export default function OrderConfirmation({ orderId, onTrackOrder, onContinueShopping }: OrderConfirmationProps) {
+export default function OrderConfirmation({ orderId, onContinueShopping }: OrderConfirmationProps) {
   const { orders } = useOrderStore();
   const order = orders.find(o => o.id === orderId);
 
@@ -90,15 +90,8 @@ export default function OrderConfirmation({ orderId, onTrackOrder, onContinueSho
       {/* Actions */}
       <div className="px-4 mt-6 space-y-3">
         <button
-          onClick={onTrackOrder}
-          className="w-full bg-primary text-white py-4 rounded-2xl font-bold text-base shadow-orange flex items-center justify-center gap-2"
-        >
-          <Package className="w-5 h-5" />
-          Track Your Order
-        </button>
-        <button
           onClick={onContinueShopping}
-          className="w-full bg-muted text-foreground py-3 rounded-2xl font-semibold text-sm"
+          className="w-full bg-primary text-white py-4 rounded-2xl font-bold text-base shadow-orange"
         >
           Continue Shopping
         </button>

@@ -1,41 +1,38 @@
 {
   "kind": "build_request",
-  "title": "Retry: Add profile/account summary section to Home page bottom",
+  "title": "Show count for eggs only, weight for all other products",
   "projectName": "MurkiMart",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-38",
-      "text": "Add a profile/account summary section at the bottom of the Home page (frontend/src/pages/Home.tsx). The section should display: (1) the logged-in user's name and phone number sourced from authStore, or a 'Login / Sign Up' prompt if not authenticated; (2) a row of quick-link cards/buttons for 'My Orders', 'Saved Addresses', 'Loyalty Points', and 'Help & Support' — each tapping navigates to the Profile page; (3) a 'Go to Profile' button that navigates to the Profile page. Style the section consistently with the MurkiMart orange (#F97316) and green (#16A34A) theme, using card/tile layout with icons. Place it below the CustomerCareContact banner and above any footer padding.",
+      "id": "REQ-1",
+      "text": "In ProductCard, display a numeric count (e.g., '6 pcs', '12 pcs') instead of weight for egg products only. All other products must continue to show their weight value with the Scale icon. Egg products should be identified by checking if the product's category or name contains 'egg' (case-insensitive).",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-1"
+          "msg-4"
         ],
         "quotes": [
-          "retry the build with the profile section and cart additions to the bottom of the homepage"
+          "Show number for eggs only"
         ]
       },
       "acceptanceCriteria": [
-        "When the user is logged in (authStore.isLoggedIn === true), the section displays the user's name and phone number from authStore",
-        "When the user is not logged in, the section displays a 'Login / Sign Up' prompt card",
-        "A row of four quick-link cards is shown: 'My Orders', 'Saved Addresses', 'Loyalty Points', and 'Help & Support', each with an icon",
-        "Tapping any quick-link card navigates to the Profile page",
-        "A 'Go to Profile' button is present and navigates to the Profile page",
-        "The section is placed below the CustomerCareContact banner on the Home page",
-        "The section uses MurkiMart orange (#F97316) and green (#16A34A) consistently in card/tile styling"
+        "Egg products (matched by name or category containing 'egg', case-insensitive) display a numeric count (e.g., '6 pcs') instead of weight.",
+        "All non-egg products continue to display weight with the Scale icon as before.",
+        "The count label uses a suitable icon or label to distinguish it from the weight display.",
+        "The change is reflected consistently in ProductCard wherever it is rendered (QuickAddEssentials, FlashDeals, ProductCatalog, etc.)."
       ]
     }
   ],
   "constraints": [
-    "Do not modify any files listed in frontend.immutablePaths",
-    "Use existing authStore (frontend/src/lib/authStore.ts) for authentication state — do not create a new store",
-    "Navigation must use the existing navigationStore or page-stack navigation pattern already in use in App.tsx"
+    "Do not change the weight display logic for any non-egg products.",
+    "Do not modify any files under frontend/src/hooks/ (immutable paths).",
+    "Do not modify files under frontend/src/components/ui/ (immutable paths)."
   ],
   "nonGoals": [
-    "Do not add new backend endpoints or modify backend/main.mo",
-    "Do not create new auth or address store files — use existing ones",
-    "Do not modify the Profile page itself"
+    "Adding a new backend field or data model for egg count.",
+    "Changing cart quantity logic or checkout flow.",
+    "Modifying weight display for any product other than eggs."
   ],
   "imageRequirements": {
     "required": [],

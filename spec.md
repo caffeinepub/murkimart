@@ -1,13 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Add a profile/account summary section to the bottom of the Home page.
+**Goal:** Display a numeric count (e.g., "6 pcs") instead of weight for egg products in ProductCard, while keeping weight display unchanged for all other products.
 
 **Planned changes:**
-- Add a profile/account summary section in `frontend/src/pages/Home.tsx`, placed below the CustomerCareContact banner
-- Display the logged-in user's name and phone number from `authStore`, or a "Login / Sign Up" prompt card if not authenticated
-- Add a row of four quick-link cards ("My Orders", "Saved Addresses", "Loyalty Points", "Help & Support"), each with an icon and navigating to the Profile page
-- Add a "Go to Profile" button that navigates to the Profile page
-- Style the section with MurkiMart orange (#F97316) and green (#16A34A) using a card/tile layout
+- In `ProductCard`, detect egg products by checking if the product's name or category contains "egg" (case-insensitive).
+- For egg products, show a numeric count with a "pcs" label (and appropriate icon) instead of the weight/Scale icon display.
+- All non-egg products continue to show weight with the Scale icon as before.
 
-**User-visible outcome:** Users visiting the Home page see a profile summary section at the bottom showing their name and phone (or a login prompt if not signed in), four quick-link tiles, and a button to go to the Profile page.
+**User-visible outcome:** Egg products throughout the app (QuickAddEssentials, FlashDeals, ProductCatalog, etc.) show a piece count instead of a weight, while every other product's weight display remains unchanged.

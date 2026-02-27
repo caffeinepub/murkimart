@@ -1,30 +1,22 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Add Profile/Account Summary Section to Home Page",
+  "title": "Show count for eggs only, weight for all other products",
   "requirements": [
     {
-      "id": "REQ-38",
-      "summary": "Add a profile/account summary section at the bottom of the Home page displaying user info or login prompt, quick-link cards for My Orders, Saved Addresses, Loyalty Points, and Help & Support, and a Go to Profile button",
+      "id": "REQ-1",
+      "summary": "Display numeric count for egg products, weight for all others in ProductCard",
       "acceptanceCriteria": [
-        "When the user is logged in (authStore.isLoggedIn === true), the section displays the user's name and phone number from authStore",
-        "When the user is not logged in, the section displays a 'Login / Sign Up' prompt card",
-        "A row of four quick-link cards is shown: 'My Orders', 'Saved Addresses', 'Loyalty Points', and 'Help & Support', each with an icon",
-        "Tapping any quick-link card navigates to the Profile page",
-        "A 'Go to Profile' button is present and navigates to the Profile page",
-        "The section is placed below the CustomerCareContact banner on the Home page",
-        "The section uses MurkiMart orange (#F97316) and green (#16A34A) consistently in card/tile styling"
+        "Egg products (matched by name or category containing 'egg', case-insensitive) display a numeric count (e.g., '6 pcs') instead of weight.",
+        "All non-egg products continue to display weight with the Scale icon as before.",
+        "The count label uses a suitable icon or label to distinguish it from the weight display.",
+        "The change is reflected consistently in ProductCard wherever it is rendered (QuickAddEssentials, FlashDeals, ProductCatalog, etc.)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/home/ProfileSummary.tsx",
-          "operation": "create",
-          "description": "Create a new ProfileSummary component that displays a profile/account summary section. The component reads from authStore to check if a user is logged in. If logged in (authStore.isLoggedIn === true), it displays the user's name and phone number in a styled card. If not logged in, it shows a 'Login / Sign Up' prompt card with an appropriate icon and message. Below the user info or login prompt, render a 2x2 grid of quick-link cards with icons for 'My Orders', 'Saved Addresses', 'Loyalty Points', and 'Help & Support'. Each quick-link card uses navigationStore to navigate to the Profile page when tapped. At the bottom, include a 'Go to Profile' button that also navigates to the Profile page using navigationStore. Style all cards with MurkiMart orange (#F97316) and green (#16A34A) theme colors, using a consistent card/tile layout with rounded corners, shadows, and appropriate spacing. Use Lucide React icons (User, ShoppingBag, MapPin, Award, HelpCircle) for the user info and quick-link cards."
-        },
-        {
-          "path": "frontend/src/pages/Home.tsx",
+          "path": "frontend/src/components/catalog/ProductCard.tsx",
           "operation": "modify",
-          "description": "Import the new ProfileSummary component and add it to the Home page layout. Place the <ProfileSummary /> component below the <CustomerCareContact /> component and above any footer padding or bottom navigation space. Ensure there is appropriate vertical spacing (e.g., mt-6 or mt-8) between CustomerCareContact and ProfileSummary, and between ProfileSummary and the end of the page content. The ProfileSummary section should render within the existing page container/padding structure to maintain consistent margins with other Home page sections."
+          "description": "Add conditional logic to detect egg products by checking if product.name or product.category contains 'egg' (case-insensitive). For egg products, display a numeric count (e.g., '6 pcs', '12 pcs') with a suitable icon (e.g., Hash or Package icon from lucide-react) instead of the Scale icon and weight. For all other products, preserve the existing weight display with Scale icon. Ensure the count value is derived from the product's weight field (e.g., if weight is '6', display '6 pcs'). The visual styling should remain consistent with the existing design."
         }
       ]
     }

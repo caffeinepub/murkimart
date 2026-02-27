@@ -2,11 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-add-a-profile-account-summary-section-at-the-bottom-of-the-home-page-frontend-src-pages-home-tsx-the-section-should-display-1-the-logged-in-user-s-name-and-phone-number-sourced-from-authstore-or-a-login-sign-up-prompt-if-not-authenticated-2-a-row-of-quick-link-cards-buttons-for-my-orders-saved-addresses-loyalty-points-and-help-support-each-tapping-navigates-to-the-profile-page-3-a-go-to-profile-button-that-navigates-to-the-profile-page-style-the-section-consistently-with-the-murkimart-orange-f97316-and-green-16a34a-theme-using-card-tile-layout-with-icons-place-it-below-the-customercarecontact-banner-and-above-any-footer-padding",
-      "featureTitle": "Add a profile/account summary section at the bottom of the Home page (frontend/src/pages/Home.tsx). The section should display: (1) the logged-in user's name and phone number sourced from authStore, or a 'Login / Sign Up' prompt if not authenticated; (2) a row of quick-link cards/buttons for 'My Orders', 'Saved Addresses', 'Loyalty Points', and 'Help & Support' — each tapping navigates to the Profile page; (3) a 'Go to Profile' button that navigates to the Profile page. Style the section consistently with the MurkiMart orange (#F97316) and green (#16A34A) theme, using card/tile layout with icons. Place it below the CustomerCareContact banner and above any footer padding.",
+      "featureId": "feature-in-productcard-display-a-numeric-count-e-g-6-pcs-12-pcs-instead-of-weight-for-egg-products-only-all-other-products-must-continue-to-show-their-weight-value-with-the-scale-icon-egg-products-should-be-identified-by-checking-if-the-product-s-category-or-name-contains-egg-case-insensitive",
+      "featureTitle": "In ProductCard, display a numeric count (e.g., '6 pcs', '12 pcs') instead of weight for egg products only. All other products must continue to show their weight value with the Scale icon. Egg products should be identified by checking if the product's category or name contains 'egg' (case-insensitive).",
       "files": [
-        "frontend/src/components/home/ProfileSummary.tsx",
-        "frontend/src/pages/Home.tsx"
+        "frontend/src/components/catalog/ProductCard.tsx"
       ],
       "components": [
         "authorization@4.0.0",
@@ -20,7 +19,7 @@
         "http-outcalls@3.0.0"
       ],
       "testIds": [
-        "REQ-38"
+        "REQ-1"
       ],
       "confidence": "high"
     }

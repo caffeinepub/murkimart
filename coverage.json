@@ -1,7 +1,7 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-27T15:24:51.612Z",
+  "generatedAt": "2026-02-27T16:50:49.529Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
@@ -11,16 +11,14 @@
     "implemented": 1,
     "items": [
       {
-        "id": "REQ-38",
-        "summary": "Add a profile/account summary section at the bottom of the Home page (frontend/src/pages/Home.tsx). The section should display: (1) the logged-in user's name and phone number sourced from authStore, or a 'Login / Sign Up' prompt if not authenticated; (2) a row of quick-link cards/buttons for 'My Orders', 'Saved Addresses', 'Loyalty Points', and 'Help & Support' — each tapping navigates to the Profile page; (3) a 'Go to Profile' button that navigates to the Profile page. Style the section consistently with the MurkiMart orange (#F97316) and green (#16A34A) theme, using card/tile layout with icons. Place it below the CustomerCareContact banner and above any footer padding.",
+        "id": "REQ-1",
+        "summary": "In ProductCard, display a numeric count (e.g., '6 pcs', '12 pcs') instead of weight for egg products only. All other products must continue to show their weight value with the Scale icon. Egg products should be identified by checking if the product's category or name contains 'egg' (case-insensitive).",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/home/ProfileSummary.tsx",
-          "frontend/src/pages/Home.tsx"
+          "frontend/src/components/catalog/ProductCard.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/home/ProfileSummary.tsx",
-          "frontend/src/pages/Home.tsx"
+          "frontend/src/components/catalog/ProductCard.tsx"
         ]
       }
     ]
@@ -30,8 +28,7 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/home/ProfileSummary.tsx",
-    "frontend/src/pages/Home.tsx",
+    "frontend/src/components/catalog/ProductCard.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

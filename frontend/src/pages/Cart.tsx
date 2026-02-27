@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Minus, Plus, Trash2, Tag, ChevronRight, ShoppingBag } from 'lucide-react';
+import { Minus, Plus, Trash2, Tag, ChevronRight, ShoppingBag, Scale } from 'lucide-react';
 import { useCartStore } from '@/lib/cartStore';
 import { useLanguageStore } from '@/lib/languageStore';
 
@@ -74,7 +74,10 @@ export default function Cart({ onCheckout, onContinueShopping }: CartProps) {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-foreground line-clamp-1">{product.name}</p>
-              <p className="text-xs text-muted-foreground">{product.unit}</p>
+              <div className="flex items-center gap-1 mt-0.5">
+                <Scale className="w-3 h-3 text-muted-foreground" />
+                <span className="text-xs text-muted-foreground">{product.weight}</span>
+              </div>
               <div className="flex items-center gap-1.5 mt-0.5">
                 <span className="text-sm font-bold text-foreground">₹{product.discountedPrice * quantity}</span>
                 {product.price > product.discountedPrice && (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star, Plus, Minus, Zap } from 'lucide-react';
+import { Star, Plus, Minus, Zap, Scale, Hash } from 'lucide-react';
 import { Product } from '@/lib/products';
 import { useCartStore } from '@/lib/cartStore';
 import { useLanguageStore } from '@/lib/languageStore';
@@ -7,6 +7,13 @@ import { useInstantOrder } from '@/hooks/useInstantOrder';
 
 interface ProductCardProps {
   product: Product;
+}
+
+function isEggProduct(product: Product): boolean {
+  return (
+    product.category.toLowerCase().includes('egg') ||
+    product.name.toLowerCase().includes('egg')
+  );
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
@@ -26,6 +33,8 @@ export default function ProductCard({ product }: ProductCardProps) {
     e.stopPropagation();
     handleBuyNow(product);
   };
+
+  const isEgg = isEggProduct(product);
 
   return (
     <div className="bg-white rounded-2xl border border-border shadow-xs overflow-hidden flex flex-col">
@@ -48,8 +57,22 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       {/* Info */}
       <div className="p-2.5 flex flex-col flex-1">
-        <p className="text-[11px] text-muted-foreground mb-0.5">{product.unit}</p>
         <p className="text-sm font-semibold text-foreground line-clamp-2 leading-tight mb-1">{product.name}</p>
+
+        {/* Weight or Count */}
+        <div className="flex items-center gap-1 mb-1.5">
+          {isEgg ? (
+            <>
+              <Hash className="w-3 h-3 text-muted-foreground" />
+              <span className="text-[11px] text-muted-foreground font-medium">{product.unit}</span>
+            </>
+          ) : (
+            <>
+              <Scale className="w-3 h-3 text-muted-foreground" />
+              <span className="text-[11px] text-muted-foreground font-medium">{product.weight}</span>
+            </>
+          )}
+        </div>
 
         {/* Rating */}
         <div className="flex items-center gap-1 mb-2">

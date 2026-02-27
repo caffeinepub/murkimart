@@ -1,25 +1,48 @@
-import Array "mo:core/Array";
-import Text "mo:core/Text";
-import Map "mo:core/Map";
-import Iter "mo:core/Iter";
-import Blob "mo:core/Blob";
-import List "mo:core/List";
-import Time "mo:core/Time";
-import Principal "mo:core/Principal";
-import Runtime "mo:core/Runtime";
-import MixinStorage "blob-storage/Mixin";
 import Stripe "stripe/stripe";
 import OutCall "http-outcalls/outcall";
 import MixinAuthorization "authorization/MixinAuthorization";
 import AccessControl "authorization/access-control";
+import Map "mo:core/Map";
+import Principal "mo:core/Principal";
+import Runtime "mo:core/Runtime";
+import Storage "blob-storage/Storage";
+import MixinStorage "blob-storage/Mixin";
 
 actor {
-  // Storage
-  include MixinStorage();
-
   // Authorization
   let accessControlState = AccessControl.initState();
   include MixinAuthorization(accessControlState);
+
+  // Include blob storage
+  include MixinStorage();
+
+  // User profiles
+  public type UserProfile = {
+    name : Text;
+  };
+
+  let userProfiles = Map.empty<Principal, UserProfile>();
+
+  public query ({ caller }) func getCallerUserProfile() : async ?UserProfile {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can get profiles");
+    };
+    userProfiles.get(caller);
+  };
+
+  public query ({ caller }) func getUserProfile(user : Principal) : async ?UserProfile {
+    if (caller != user and not AccessControl.isAdmin(accessControlState, caller)) {
+      Runtime.trap("Unauthorized: Can only view your own profile");
+    };
+    userProfiles.get(user);
+  };
+
+  public shared ({ caller }) func saveCallerUserProfile(profile : UserProfile) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can save profiles");
+    };
+    userProfiles.add(caller, profile);
+  };
 
   // Stripe integration
   var stripeConfiguration : ?Stripe.StripeConfiguration = null;
